@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lab 1 – Using AWS Systems Manager: MCQ Quiz</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 24px; line-height: 1.5; }
+    h1 { margin-bottom: 0; }
+    .subtitle { color: #555; margin-top: 4px; margin-bottom: 24px; }
+    .card { border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px 18px; margin: 14px 0; background: #fff; }
+    .qtitle { font-weight: 600; margin-bottom: 8px; }
+    .choices label { display: block; margin: 6px 0; cursor: pointer; }
+    .btn { display: inline-block; padding: 10px 14px; border-radius: 10px; border: none; background: #111827; color: white; cursor: pointer; font-weight: 600; }
+    .btn.secondary { background: #4b5563; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .controls { display: flex; gap: 8px; margin-top: 8px; }
+    .feedback { margin-top: 10px; padding: 10px; border-radius: 10px; display: none; }
+    .correct { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+    .incorrect { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+    .score { font-size: 1.1rem; font-weight: 700; }
+    .muted { color: #6b7280; font-size: 0.95rem; }
+    footer { margin-top: 28px; color: #6b7280; font-size: 0.9rem; }
+    .hl { font-weight: 700; }
+  </style>
+</head>
+<body>
+  <h1>Lab 1 – Using AWS Systems Manager</h1>
+  <div class="subtitle">MCQ Quiz (10 questions) • Concepts + Problem‑Solving</div>
+
+  <div id="quiz"></div>
+
+  <div class="card">
+    <div class="controls">
+      <button id="checkAll" class="btn">Check All</button>
+      <button id="resetAll" class="btn secondary">Reset</button>
+    </div>
+    <div id="score" class="score" style="margin-top:12px;"></div>
+    <div class="muted">Tip: You can also check each question individually.</div>
+  </div>
+
+  <footer>
+    Lab context: Inventory • Run Command • Parameter Store • Session Manager.
+  </footer>
+
+<script>
+const QUESTIONS = [
+  { id: "q1", title: "Which Systems Manager feature allows you to collect software and configuration data from EC2 instances?", choices: ["Session Manager", "Parameter Store", "Inventory", "Run Command"], answerIndex: 2, explanation: "Inventory collects OS and application metadata from managed instances." },
+  { id: "q2", title: "In this lab, which Systems Manager feature was used to install the Widget Manufacturing Dashboard?", choices: ["Session Manager", "Run Command", "CloudFormation", "Parameter Store"], answerIndex: 1, explanation: "Run Command executes scripts remotely to install apps like the Widget Dashboard." },
+  { id: "q3", title: "Which Parameter Store name/value combination was used to enable the beta feature in the app?", choices: ["/dashboard/enable-beta = Yes", "/dashboard/show-beta-features = True", "/widget/beta = 1", "/app/features/beta = Enabled"], answerIndex: 1, explanation: "The lab uses /dashboard/show-beta-features with value True." },
+  { id: "q4", title: "What is the security advantage of Session Manager compared to SSH?", choices: ["It improves EC2 CPU performance", "It removes the need for SSH keys and open ports", "It automatically updates the OS", "It provides free CloudWatch metrics"], answerIndex: 1, explanation: "Session Manager enables secure IAM-based access without exposing SSH ports." },
+  { id: "q5", title: "Which IAM managed policy is the modern standard for EC2 SSM access?", choices: ["AmazonEC2RoleforSSM", "AmazonSSMFullAccess", "AmazonSSMManagedInstanceCore", "AmazonEC2ReadOnlyAccess"], answerIndex: 2, explanation: "AmazonSSMManagedInstanceCore replaces the deprecated AmazonEC2RoleforSSM." },
+  { id: "q6", title: "You launched an EC2 instance with the SSM agent installed, but it does not appear in Fleet Manager as a Managed Instance. What is the most likely cause?", choices: ["The instance lacks a public IP", "The IAM role is missing AmazonSSMManagedInstanceCore", "The subnet does not allow HTTP traffic", "The EC2 instance type is not supported"], answerIndex: 1, explanation: "Without the proper IAM policy, the instance cannot register with Systems Manager." },
+  { id: "q7", title: "You need to deploy a software update across 200 EC2 instances. Which Systems Manager feature should you use?", choices: ["Inventory", "Run Command with Tags", "Parameter Store", "CloudWatch Logs"], answerIndex: 1, explanation: "Run Command can execute updates across multiple instances, and Tags simplify targeting." },
+  { id: "q8", title: "After creating /dashboard/show-beta-features=True, the app does not show the beta chart. What should you check first?", choices: ["Whether EC2 has an Elastic IP", "Whether the app is coded to read Parameter Store", "Whether Session Manager is enabled", "Whether the CloudFormation stack is complete"], answerIndex: 1, explanation: "The app must query Parameter Store; otherwise, the parameter has no effect." },
+  { id: "q9", title: "Your security team blocks SSH access but requires administrators to still troubleshoot EC2s when needed. Which Systems Manager capability solves this?", choices: ["Run Command", "Inventory", "Session Manager", "Parameter Store"], answerIndex: 2, explanation: "Session Manager provides secure browser/CLI shell access without SSH." },
+  { id: "q10", title: "You manage 10 EC2 web servers behind a load balancer. A new app patch must be deployed immediately across all. What’s the best approach?", choices: ["SSH into each instance manually", "Use Run Command targeting instances by Tag (Role=WebServer)", "Update each instance in Fleet Manager", "Terminate and relaunch instances with new AMI"], answerIndex: 1, explanation: "Run Command + Tags ensures consistent patching across all servers simultaneously." }
+];
+
+function createQuestionCard(q, idx) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.id = q.id;
+
+  const title = document.createElement('div');
+  title.className = 'qtitle';
+  title.innerText = `Q${idx+1}. ${q.title}`;
+  card.appendChild(title);
+
+  const choicesDiv = document.createElement('div');
+  choicesDiv.className = 'choices';
+
+  q.choices.forEach((choice, cidx) => {
+    const id = `${q.id}_c${cidx}`;
+    const label = document.createElement('label');
+    label.innerHTML = `<input type="radio" name="${q.id}" value="${cidx}" id="${id}"> ${String.fromCharCode(65 + cidx)}. ${choice}`;
+    choicesDiv.appendChild(label);
+  });
+  card.appendChild(choicesDiv);
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback';
+  feedback.id = `${q.id}_fb`;
+  card.appendChild(feedback);
+
+  const controls = document.createElement('div');
+  controls.className = 'controls';
+  const checkBtn = document.createElement('button');
+  checkBtn.className = 'btn';
+  checkBtn.innerText = 'Check';
+  checkBtn.addEventListener('click', () => checkQuestion(q.id));
+  const clearBtn = document.createElement('button');
+  clearBtn.className = 'btn secondary';
+  clearBtn.innerText = 'Clear';
+  clearBtn.addEventListener('click', () => clearQuestion(q.id));
+  controls.appendChild(checkBtn);
+  controls.appendChild(clearBtn);
+  card.appendChild(controls);
+
+  return card;
+}
+
+function renderQuiz() {
+  const quiz = document.getElementById('quiz');
+  QUESTIONS.forEach((q, idx) => {
+    quiz.appendChild(createQuestionCard(q, idx));
+  });
+}
+
+function getSelectedIndex(qid) {
+  const selected = document.querySelector(`input[name="${qid}"]:checked`);
+  return selected ? parseInt(selected.value, 10) : null;
+}
+
+function checkQuestion(qid) {
+  const q = QUESTIONS.find(x => x.id === qid);
+  const idx = getSelectedIndex(qid);
+  const fb = document.getElementById(`${qid}_fb`);
+  if (idx === null) {
+    fb.className = 'feedback incorrect';
+    fb.style.display = 'block';
+    fb.innerHTML = "<strong>Please select an option.</strong>";
+    return;
+  }
+  const correct = idx === q.answerIndex;
+  fb.className = 'feedback ' + (correct ? 'correct' : 'incorrect');
+  fb.style.display = 'block';
+  const letter = String.fromCharCode(65 + q.answerIndex);
+  fb.innerHTML = (correct ? "✅ Correct. " : "❌ Incorrect. ") +
+    `<span class="hl">Answer: ${letter}</span>. ${q.explanation}`;
+}
+
+function clearQuestion(qid) {
+  const inputs = document.querySelectorAll(`input[name="${qid}"]`);
+  inputs.forEach(i => i.checked = false);
+  const fb = document.getElementById(`${qid}_fb`);
+  fb.style.display = 'none';
+  fb.innerHTML = '';
+}
+
+function checkAll() {
+  let correct = 0;
+  QUESTIONS.forEach(q => {
+    const idx = getSelectedIndex(q.id);
+    const isCorrect = idx === q.answerIndex;
+    if (idx !== null && isCorrect) correct++;
+    checkQuestion(q.id);
+  });
+  const score = document.getElementById('score');
+  score.textContent = `Score: ${correct} / ${QUESTIONS.length}`;
+}
+
+function resetAll() {
+  QUESTIONS.forEach(q => clearQuestion(q.id));
+  const score = document.getElementById('score');
+  score.textContent = '';
+}
+
+document.getElementById('checkAll').addEventListener('click', checkAll);
+document.getElementById('resetAll').addEventListener('click', resetAll);
+
+renderQuiz();
+</script>
+</body>
+</html>
