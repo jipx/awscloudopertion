@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Lab template - Creates IAM user with a managed and inline policy.
+  Demonstrates the difference between managed and inline IAM policies.
+
+Parameters:
+  UserNameParam:
+    Type: String
+    Default: awsstudent
+    Description: IAM user name to create for the lab
+
+  ManagedPolicyNameParam:
+    Type: String
+    Default: lab_policy
+    Description: Name of the managed policy to create
+
+  InlinePolicyNameParam:
+    Type: String
+    Default: lab_inline_policy
+    Description: Name of the inline policy to attach
+
+  UserPathParam:
+    Type: String
+    Default: /lab/
+    Description: Path for the IAM user
+
+Resources:
+  # IAM User
+  LabUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Ref UserNameParam
+      Path: !Ref UserPathParam
+
+  # Managed Policy
+  LabManagedPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Ref ManagedPolicyNameParam
+      Users:
+        - !Ref LabUser
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "iam:ListUsers"
+              - "iam:GetUser"
+              - "iam:ListPolicies"
+              - "s3:ListAllMyBuckets"
+              - "s3:GetBucketLocation"
+            Resource: "*"
+
+  # Inline Policy
+  LabInlinePolicy:
+    Type: AWS::IAM::UserPolicy
+    Properties:
+      PolicyName: !Ref InlinePolicyNameParam
+      UserName: !Ref LabUser
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "ec2:DescribeInstances"
+              - "ec2:DescribeVolumes"
+            Resource: "*"
+
+Outputs:
+  UserName:
+    Description: The IAM user created for the lab
+    Value: !Ref LabUser
+  ManagedPolicyName:
+    Description: The managed IAM policy created for the lab
+    Value: !Ref LabManagedPolicy
+  InlinePolicyName:
+    Description: The inline IAM policy attached to the user
+    Value: !Ref LabInlinePolicy
