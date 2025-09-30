@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Lab template - Creates IAM user awsstudent, a managed lab_policy,
+  and an inline policy attached to the user.
+
+Resources:
+  # IAM User
+  LabUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: awsstudent
+      Path: /lab/
+
+  # Managed Policy
+  LabManagedPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: lab_policy
+      Users:
+        - !Ref LabUser
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "iam:ListUsers"
+              - "iam:GetUser"
+              - "iam:ListPolicies"
+              - "s3:ListAllMyBuckets"
+              - "s3:GetBucketLocation"
+            Resource: "*"
+
+  # Inline Policy
+  LabInlinePolicy:
+    Type: AWS::IAM::UserPolicy
+    Properties:
+      PolicyName: lab_inline_policy
+      UserName: !Ref LabUser
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "ec2:DescribeInstances"
+              - "ec2:DescribeVolumes"
+            Resource: "*"
+
+Outputs:
+  UserName:
+    Description: The IAM user created for the lab
+    Value: !Ref LabUser
+  ManagedPolicyName:
+    Description: The managed IAM policy created for the lab
+    Value: !Ref LabManagedPolicy
+  InlinePolicyName:
+    Description: The inline IAM policy attached to the user
+    Value: !Ref LabInlinePolicy
