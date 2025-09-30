@@ -81,3 +81,4 @@ The template exports the following values:
 
 ## 🖼️ Diagram
 👉 Include the PNG diagram generated for this lab to visually show the relationship between the IAM user, Managed Policy, and Inline Policy.
+![alt text](Images/unnamed.png)
