@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>S3 Static Website & CloudFront Lab — Interactive Quiz</title>
+<style>
+  :root {
+    --bg: #f7f7fb;
+    --card: #ffffff;
+    --ink: #1f2937;
+    --accent: #2563eb;
+    --ok: #0f766e;
+    --warn: #b45309;
+    --bad: #b91c1c;
+    --muted: #6b7280;
+    --code: #0b1021;
+  }
+  html, body { margin:0; padding:0; background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji"; line-height:1.5;}
+  .wrap { max-width: 1000px; margin: 28px auto 80px; padding: 0 16px;}
+  header { margin-bottom: 18px;}
+  h1 { font-size: clamp(1.4rem, 1.2rem + 1.2vw, 2rem); margin: 0 0 8px; }
+  p.lead { margin: 0 0 12px; color: var(--muted); }
+  .card { background: var(--card); border-radius: 14px; box-shadow: 0 10px 26px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04); padding: 18px 18px; margin: 14px 0;}
+  .q { margin: 0 0 10px; font-weight: 600;}
+  .options { display: grid; gap: 8px; }
+  .options label { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fff; cursor: pointer;}
+  .options input[type="radio"] { margin-top: 2px; }
+  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; background: #f3f4f6; color: var(--code); padding: 0.1rem 0.35rem; border-radius: 6px;}
+  pre { padding: 12px; overflow: auto; }
+  .hint { color: var(--muted); font-size: 0.95rem; margin-top: 8px;}
+  .feedback { display:none; margin-top: 8px; font-size: 0.95rem; padding: 10px 12px; border-radius: 10px;}
+  .feedback.ok { background:#ecfdf5; color: var(--ok); border:1px solid #a7f3d0;}
+  .feedback.bad { background:#fef2f2; color: var(--bad); border:1px solid #fecaca;}
+  .explain { color: #374151; margin-top: 6px; }
+  .actions { position: sticky; bottom: 0; background: rgba(247,247,251,0.9); backdrop-filter: blur(6px); display:flex; gap:10px; padding: 12px 0; border-top: 1px solid #e5e7eb; margin-top: 16px;}
+  button { appearance: none; border: 0; padding: 12px 16px; border-radius: 12px; font-weight: 600; cursor: pointer; }
+  .primary { background: var(--accent); color: #fff; }
+  .ghost { background: #fff; border: 1px solid #e5e7eb; }
+  .score { font-weight: 700; }
+  .badge { display:inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.8rem; border:1px solid #e5e7eb; background:#fff; color: var(--muted); margin-left: 6px;}
+  .sr { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden;}
+  .group { counter-increment: q; }
+  .qnum::before { content: counter(q) ". "; font-weight: 700; margin-right: 2px; }
+  .footer-note { color: var(--muted); font-size: 0.9rem; margin-top: 16px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>S3 Static Website &amp; CloudFront — Interactive Quiz</h1>
+    <p class="lead">Covers: AWS CLI (<code>cp</code>, <code>sync</code>), S3 static website, ACLs vs Bucket Policies, and CloudFront (TTL/OAI). 18 questions total.</p>
+  </header>
+
+  <form id="quizForm">
+    <!-- Questions start -->
+    <!-- Q1 -->
+    <div class="card group" data-answer="B">
+      <div class="q"><span class="qnum"></span>When uploading files to S3 for the static website, what is the correct CLI command to copy all files from a local folder?</div>
+      <div class="options">
+        <label><input type="radio" name="q1" value="A"> A. <code>aws s3 ls sysops-activity-files/ s3://jipx123website/</code></label>
+        <label><input type="radio" name="q1" value="B"> B. <code>aws s3 cp sysops-activity-files/ s3://jipx123website/ --recursive</code></label>
+        <label><input type="radio" name="q1" value="C"> C. <code>aws s3 mv sysops-activity-files/ s3://jipx123website/</code></label>
+        <label><input type="radio" name="q1" value="D"> D. <code>aws s3 sync s3://jipx123website/ sysops-activity-files/</code></label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint"><strong>Why:</strong> <code>cp --recursive</code> copies all files from local to S3. <code>sync</code> here is reversed in D.</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="card group" data-answer="C">
+      <div class="q"><span class="qnum"></span>What does the error “Invalid length for parameter Key, value: 0” usually indicate?</div>
+      <div class="options">
+        <label><input type="radio" name="q2" value="A"> A. The S3 bucket name is invalid.</label>
+        <label><input type="radio" name="q2" value="B"> B. The IAM user lacks S3 permissions.</label>
+        <label><input type="radio" name="q2" value="C"> C. A file path or object key is missing in the command.</label>
+        <label><input type="radio" name="q2" value="D"> D. Static website hosting is off.</label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint">Often caused by a malformed CLI (e.g., breaking flags onto a new line so the key is empty).</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="card group" data-answer="B">
+      <div class="q"><span class="qnum"></span>Why did the script show <code>--recursive: command not found</code>?</div>
+      <div class="options">
+        <label><input type="radio" name="q3" value="A"> A. The bucket does not support recursion.</label>
+        <label><input type="radio" name="q3" value="B"> B. The <code>--recursive</code> flag was on a new line without <code>\</code>.</label>
+        <label><input type="radio" name="q3" value="C"> C. IAM role restrictions prevent recursion.</label>
+        <label><input type="radio" name="q3" value="D"> D. The script must be run with <code>sudo</code>.</label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint">Flags must be on the same line or use a trailing backslash for continuation.</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="card group" data-answer="B">
+      <div class="q"><span class="qnum"></span>After uploading website files to S3, what additional step is required to make it publicly accessible?</div>
+      <div class="options">
+        <label><input type="radio" name="q4" value="A"> A. Enable versioning.</label>
+        <label><input type="radio" name="q4" value="B"> B. Enable static website hosting and allow public reads.</label>
+        <label><input type="radio" name="q4" value="C"> C. Attach an Elastic IP to the bucket.</label>
+        <label><input type="radio" name="q4" value="D"> D. Create an EC2 role.</label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint">S3 needs website hosting + public access (or CloudFront+OAI).</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="card group" data-answer="C">
+      <div class="q"><span class="qnum"></span>Which CLI is best to sync changes automatically without re-uploading everything?</div>
+      <div class="options">
+        <label><input type="radio" name="q5" value="A"> A. <code>aws s3 mv</code></label>
+        <label><input type="radio" name="q5" value="B"> B. <code>aws s3 cp</code></label>
+        <label><input type="radio" name="q5" value="C"> C. <code>aws s3 sync</code></label>
+        <label><input type="radio" name="q5" value="D"> D. <code>aws s3 ls</code></label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint"><code>sync</code> uploads only new/changed files.</div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="card group" data-answer="C">
+      <div class="q"><span class="qnum"></span>After upload, the site shows <em>Access Denied</em>. Most likely cause?</div>
+      <div class="options">
+        <label><input type="radio" name="q6" value="A"> A. Wrong bucket name.</label>
+        <label><input type="radio" name="q6" value="B"> B. Website hosting not enabled.</label>
+        <label><input type="radio" name="q6" value="C"> C. Objects are private (no public read).</label>
+        <label><input type="radio" name="q6" value="D"> D. The script failed silently.</label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint">Default S3 object ACLs are private.</div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="card group" data-answer="C">
+      <div class="q"><span class="qnum"></span>What happens if a student breaks <code>--recursive</code> onto a new line without <code>\</code>?</div>
+      <div class="options">
+        <label><input type="radio" name="q7" value="A"> A. It works anyway.</label>
+        <label><input type="radio" name="q7" value="B"> B. The bucket is deleted.</label>
+        <label><input type="radio" name="q7" value="C"> C. The shell prints <code>--recursive: command not found</code>.</label>
+        <label><input type="radio" name="q7" value="D"> D. It runs but uploads nothing.</label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint">New line → treated as a separate command.</div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="card group" data-answer="B">
+      <div class="q"><span class="qnum"></span>You run <code>aws s3 cp sysops-activity-files/ s3://jipx123website/ --recursive</code> but get <em>AccessDenied</em>. Most likely reason?</div>
+      <div class="options">
+        <label><input type="radio" name="q8" value="A"> A. The bucket does not exist.</label>
+        <label><input type="radio" name="q8" value="B"> B. IAM policy lacks <code>"s3:PutObject"</code>.</label>
+        <label><input type="radio" name="q8" value="C"> C. Website hosting is disabled.</label>
+        <label><input type="radio" name="q8" value="D"> D. CLI is outdated.</label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint">Upload needs <code>s3:PutObject</code>.</div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="card group" data-answer="A">
+      <div class="q"><span class="qnum"></span>Files are visible in S3 but opening <code>...s3.amazonaws.com/index.html</code> shows Access Denied. Check?</div>
+      <div class="options">
+        <label><input type="radio" name="q9" value="A"> A. Whether <code>index.html</code> is publicly readable (or via CloudFront OAI).</label>
+        <label><input type="radio" name="q9" value="B"> B. If CloudFront is enabled.</label>
+        <label><input type="radio" name="q9" value="C"> C. If versioning is on.</label>
+        <label><input type="radio" name="q9" value="D"> D. If MFA delete is enabled.</label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint">S3 object must allow reads or be served via CloudFront+OAI.</div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="card group" data-answer="A">
+      <div class="q"><span class="qnum"></span>More secure way to serve content than public bucket?</div>
+      <div class="options">
+        <label><input type="radio" name="q10" value="A"> A. CloudFront with OAI restricting direct S3 access.</label>
+        <label><input type="radio" name="q10" value="B"> B. Enable MFA delete.</label>
+        <label><input type="radio" name="q10" value="C"> C. Turn on versioning.</label>
+        <label><input type="radio" name="q10" value="D"> D. Always run <code>aws s3 ls</code> first.</label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint">CloudFront + OAI is the recommended approach.</div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="card group" data-answer="C">
+      <div class="q"><span class="qnum"></span>Automatically reflect local changes in S3 without full re-upload each time?</div>
+      <div class="options">
+        <label><input type="radio" name="q11" value="A"> A. <code>aws s3 cp ... --recursive</code></label>
+        <label><input type="radio" name="q11" value="B"> B. <code>aws s3 mv ... --recursive</code></label>
+        <label><input type="radio" name="q11" value="C"> C. <code>aws s3 sync sysops-activity-files/ s3://jipx123website/</code></label>
+        <label><input type="radio" name="q11" value="D"> D. <code>aws s3 ls ...</code></label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint"><code>sync</code> detects deltas.</div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="card group" data-answer="A">
+      <div class="q"><span class="qnum"></span>You delete <code>about.html</code> locally then run <code>aws s3 sync</code> (no flags). What happens in S3?</div>
+      <div class="options">
+        <label><input type="radio" name="q12" value="A"> A. <code>about.html</code> stays (no deletion by default).</label>
+        <label><input type="radio" name="q12" value="B"> B. It is deleted automatically.</label>
+        <label><input type="radio" name="q12" value="C"> C. Sync fails with error.</label>
+        <label><input type="radio" name="q12" value="D"> D. Versioning is disabled.</label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint">Use <code>--delete</code> to mirror deletions.</div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="card group" data-answer="D">
+      <div class="q"><span class="qnum"></span>Best practice to ensure bucket mirrors local (including deletions)?</div>
+      <div class="options">
+        <label><input type="radio" name="q13" value="A"> A. <code>cp --recursive</code></label>
+        <label><input type="radio" name="q13" value="B"> B. <code>mv --recursive</code></label>
+        <label><input type="radio" name="q13" value="C"> C. <code>sync</code> (no flags)</label>
+        <label><input type="radio" name="q13" value="D"> D. <code>sync --delete</code></label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint"><code>sync --delete</code> keeps S3 identical to local.</div>
+    </div>
+
+    <!-- Q14 -->
+    <div class="card group" data-answer="C">
+      <div class="q"><span class="qnum"></span>Speed up global delivery of your S3 site. Which service?</div>
+      <div class="options">
+        <label><input type="radio" name="q14" value="A"> A. Route 53</label>
+        <label><input type="radio" name="q14" value="B"> B. CloudTrail</label>
+        <label><input type="radio" name="q14" value="C"> C. CloudFront</label>
+        <label><input type="radio" name="q14" value="D"> D. Shield</label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint">CloudFront is AWS’s CDN.</div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="card group" data-answer="C">
+      <div class="q"><span class="qnum"></span>After updating <code>index.html</code>, CloudFront still shows old content. Why?</div>
+      <div class="options">
+        <label><input type="radio" name="q15" value="A"> A. CloudFront is down.</label>
+        <label><input type="radio" name="q15" value="B"> B. OAI lacks <code>s3:GetObject</code>.</label>
+        <label><input type="radio" name="q15" value="C"> C. Cached at edge due to TTL.</label>
+        <label><input type="radio" name="q15" value="D"> D. Website hosting disabled.</label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint">Invalidate cache or reduce TTL.</div>
+    </div>
+
+    <!-- Q16 -->
+    <div class="card group" data-answer="B">
+      <div class="q"><span class="qnum"></span>CloudFront + OAI shows <em>Access Denied</em>. Most likely cause?</div>
+      <div class="options">
+        <label><input type="radio" name="q16" value="A"> A. Bucket not versioned.</label>
+        <label><input type="radio" name="q16" value="B"> B. Bucket policy does not allow OAI principal.</label>
+        <label><input type="radio" name="q16" value="C"> C. Need Elastic IP for origin.</label>
+        <label><input type="radio" name="q16" value="D"> D. Missing <code>--recursive</code> on upload.</label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint">Grant the OAI (or OAC) access in bucket policy.</div>
+    </div>
+
+    <!-- Q17 -->
+    <div class="card group" data-answer="A">
+      <div class="q"><span class="qnum"></span>Make a single object public using ACL (not recommended as best practice)?</div>
+      <div class="options">
+        <label><input type="radio" name="q17" value="A"> A. <code>aws s3api put-object-acl --bucket jipx123website --key index.html --acl public-read</code></label>
+        <label><input type="radio" name="q17" value="B"> B. Bucket ACL <code>--acl private</code></label>
+        <label><input type="radio" name="q17" value="C"> C. Add <code>--recursive</code></label>
+        <label><input type="radio" name="q17" value="D"> D. Enable versioning</label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint">Public ACL works but prefer Bucket Policy or CloudFront+OAI.</div>
+    </div>
+
+    <!-- Q18 -->
+    <div class="card group" data-answer="A">
+      <div class="q"><span class="qnum"></span>Which fields are missing in this policy so public can read objects?</div>
+      <pre><code>{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::jipx123website/*"
+    }
+  ]
+}</code></pre>
+      <div class="options">
+        <label><input type="radio" name="q18" value="A"> A. <code>"Effect": "Allow"</code> and <code>"Principal": "*"</code></label>
+        <label><input type="radio" name="q18" value="B"> B. <code>"Version": "2008-10-17"</code></label>
+        <label><input type="radio" name="q18" value="C"> C. <code>"Action": "s3:PutObject"</code></label>
+        <label><input type="radio" name="q18" value="D"> D. <code>"Resource": "arn:aws:s3:::jipx123website"</code></label>
+      </div>
+      <div class="feedback bad">❌ Incorrect.</div>
+      <div class="feedback ok">✅ Correct.</div>
+      <div class="explain hint">Public-read needs Effect Allow + Principal "*".</div>
+    </div>
+
+    <div class="card">
+      <div><strong>Scoring</strong></div>
+      <div id="scoreLine" class="hint">Not submitted yet.</div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="primary" id="submitBtn">Submit Answers</button>
+      <button type="button" class="ghost" id="showAnsBtn">Reveal Correct Answers</button>
+      <button type="reset" class="ghost" id="resetBtn">Reset</button>
+    </div>
+
+    <p class="footer-note">Tip: This page is self-contained. You can save it and host it on S3 or serve via CloudFront.</p>
+  </form>
+</div>
+
+<script>
+(function() {
+  const form = document.getElementById('quizForm');
+  const groups = Array.from(form.querySelectorAll('.group'));
+  const scoreLine = document.getElementById('scoreLine');
+  const submitBtn = document.getElementById('submitBtn');
+  const showAnsBtn = document.getElementById('showAnsBtn');
+  const resetBtn = document.getElementById('resetBtn');
+
+  function grade() {
+    let correct = 0;
+    groups.forEach((g, idx) => {
+      const qName = 'q' + (idx + 1);
+      const answer = g.getAttribute('data-answer');
+      const checked = form.querySelector('input[name="'+qName+'"]:checked');
+      const ok = g.querySelector('.feedback.ok');
+      const bad = g.querySelector('.feedback.bad');
+      ok.style.display = 'none';
+      bad.style.display = 'none';
+      if (checked) {
+        if (checked.value === answer) {
+          correct++;
+          ok.style.display = 'block';
+        } else {
+          bad.style.display = 'block';
+        }
+      } else {
+        bad.style.display = 'block';
+        bad.textContent = '⚠️ Not answered.';
+      }
+    });
+    scoreLine.innerHTML = 'Score: <span class="score">' + correct + '</span> / ' + groups.length + ' (' + Math.round((correct/groups.length)*100) + '%)';
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  function reveal() {
+    groups.forEach((g, idx) => {
+      const answer = g.getAttribute('data-answer');
+      const options = Array.from(g.querySelectorAll('input[type="radio"]'));
+      const ok = g.querySelector('.feedback.ok');
+      const bad = g.querySelector('.feedback.bad');
+      ok.style.display = 'none';
+      bad.style.display = 'none';
+      const ansInput = options.find(o => o.value === answer);
+      if (ansInput) {
+        // Mark the correct option's label visually
+        ansInput.closest('label').style.outline = '2px solid var(--ok)';
+        ansInput.closest('label').style.boxShadow = '0 0 0 4px rgba(16,185,129,0.15)';
+      }
+    });
+    scoreLine.textContent = 'Answers highlighted in green outlines above.';
+  }
+
+  function clearReveal() {
+    groups.forEach((g) => {
+      g.querySelectorAll('label').forEach(l => {
+        l.style.outline = '';
+        l.style.boxShadow = '';
+      });
+      const ok = g.querySelector('.feedback.ok');
+      const bad = g.querySelector('.feedback.bad');
+      ok.style.display = 'none';
+      bad.style.display = 'none';
+    });
+    scoreLine.textContent = 'Not submitted yet.';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  submitBtn.addEventListener('click', grade);
+  showAnsBtn.addEventListener('click', reveal);
+  resetBtn.addEventListener('click', clearReveal);
+})();
+</script>
+</body>
+</html>
