@@ -49,7 +49,7 @@
 <div class="wrap">
   <header>
     <h1>S3 Static Website &amp; CloudFront — Interactive Quiz</h1>
-    <p class="lead">Covers: AWS CLI (<code>cp</code>, <code>sync</code>), S3 static website, ACLs vs Bucket Policies, and CloudFront (TTL/OAI). 18 questions total.</p>
+  <p class="lead">Covers: AWS CLI (cp, sync), S3 static website, ACLs vs Bucket Policies, and CloudFront (TTL/OAI). 18 questions total.</p>
   </header>
 
   <form id="quizForm">
@@ -58,14 +58,14 @@
     <div class="card group" data-answer="B">
       <div class="q"><span class="qnum"></span>When uploading files to S3 for the static website, what is the correct CLI command to copy all files from a local folder?</div>
       <div class="options">
-        <label><input type="radio" name="q1" value="A"> A. <code>aws s3 ls sysops-activity-files/ s3://jipx123website/</code></label>
-        <label><input type="radio" name="q1" value="B"> B. <code>aws s3 cp sysops-activity-files/ s3://jipx123website/ --recursive</code></label>
-        <label><input type="radio" name="q1" value="C"> C. <code>aws s3 mv sysops-activity-files/ s3://jipx123website/</code></label>
-        <label><input type="radio" name="q1" value="D"> D. <code>aws s3 sync s3://jipx123website/ sysops-activity-files/</code></label>
+  <label><input type="radio" name="q1" value="A"> A. aws s3 ls sysops-activity-files/ s3://jipx123website/</label>
+  <label><input type="radio" name="q1" value="B"> B. aws s3 cp sysops-activity-files/ s3://jipx123website/ --recursive</label>
+  <label><input type="radio" name="q1" value="C"> C. aws s3 mv sysops-activity-files/ s3://jipx123website/</label>
+  <label><input type="radio" name="q1" value="D"> D. aws s3 sync s3://jipx123website/ sysops-activity-files/</label>
       </div>
       <div class="feedback bad">❌ Incorrect.</div>
       <div class="feedback ok">✅ Correct.</div>
-      <div class="explain hint"><strong>Why:</strong> <code>cp --recursive</code> copies all files from local to S3. <code>sync</code> here is reversed in D.</div>
+  <div class="explain hint"><strong>Why:</strong> cp --recursive copies all files from local to S3. sync here is reversed in D.</div>
     </div>
 
     <!-- Q2 -->
@@ -114,14 +114,14 @@
     <div class="card group" data-answer="C">
       <div class="q"><span class="qnum"></span>Which CLI is best to sync changes automatically without re-uploading everything?</div>
       <div class="options">
-        <label><input type="radio" name="q5" value="A"> A. <code>aws s3 mv</code></label>
-        <label><input type="radio" name="q5" value="B"> B. <code>aws s3 cp</code></label>
-        <label><input type="radio" name="q5" value="C"> C. <code>aws s3 sync</code></label>
-        <label><input type="radio" name="q5" value="D"> D. <code>aws s3 ls</code></label>
+  <label><input type="radio" name="q5" value="A"> A. aws s3 mv</label>
+  <label><input type="radio" name="q5" value="B"> B. aws s3 cp</label>
+  <label><input type="radio" name="q5" value="C"> C. aws s3 sync</label>
+  <label><input type="radio" name="q5" value="D"> D. aws s3 ls</label>
       </div>
       <div class="feedback bad">❌ Incorrect.</div>
       <div class="feedback ok">✅ Correct.</div>
-      <div class="explain hint"><code>sync</code> uploads only new/changed files.</div>
+  <div class="explain hint">sync uploads only new/changed files.</div>
     </div>
 
     <!-- Q6 -->
@@ -144,7 +144,7 @@
       <div class="options">
         <label><input type="radio" name="q7" value="A"> A. It works anyway.</label>
         <label><input type="radio" name="q7" value="B"> B. The bucket is deleted.</label>
-        <label><input type="radio" name="q7" value="C"> C. The shell prints <code>--recursive: command not found</code>.</label>
+  <label><input type="radio" name="q7" value="C"> C. The shell prints --recursive: command not found.</label>
         <label><input type="radio" name="q7" value="D"> D. It runs but uploads nothing.</label>
       </div>
       <div class="feedback bad">❌ Incorrect.</div>
@@ -157,20 +157,20 @@
       <div class="q"><span class="qnum"></span>You run <code>aws s3 cp sysops-activity-files/ s3://jipx123website/ --recursive</code> but get <em>AccessDenied</em>. Most likely reason?</div>
       <div class="options">
         <label><input type="radio" name="q8" value="A"> A. The bucket does not exist.</label>
-        <label><input type="radio" name="q8" value="B"> B. IAM policy lacks <code>"s3:PutObject"</code>.</label>
+  <label><input type="radio" name="q8" value="B"> B. IAM policy lacks "s3:PutObject".</label>
         <label><input type="radio" name="q8" value="C"> C. Website hosting is disabled.</label>
         <label><input type="radio" name="q8" value="D"> D. CLI is outdated.</label>
       </div>
       <div class="feedback bad">❌ Incorrect.</div>
       <div class="feedback ok">✅ Correct.</div>
-      <div class="explain hint">Upload needs <code>s3:PutObject</code>.</div>
+  <div class="explain hint">Upload needs s3:PutObject.</div>
     </div>
 
     <!-- Q9 -->
     <div class="card group" data-answer="A">
       <div class="q"><span class="qnum"></span>Files are visible in S3 but opening <code>...s3.amazonaws.com/index.html</code> shows Access Denied. Check?</div>
       <div class="options">
-        <label><input type="radio" name="q9" value="A"> A. Whether <code>index.html</code> is publicly readable (or via CloudFront OAI).</label>
+  <label><input type="radio" name="q9" value="A"> A. Whether index.html is publicly readable (or via CloudFront OAI).</label>
         <label><input type="radio" name="q9" value="B"> B. If CloudFront is enabled.</label>
         <label><input type="radio" name="q9" value="C"> C. If versioning is on.</label>
         <label><input type="radio" name="q9" value="D"> D. If MFA delete is enabled.</label>
@@ -187,7 +187,7 @@
         <label><input type="radio" name="q10" value="A"> A. CloudFront with OAI restricting direct S3 access.</label>
         <label><input type="radio" name="q10" value="B"> B. Enable MFA delete.</label>
         <label><input type="radio" name="q10" value="C"> C. Turn on versioning.</label>
-        <label><input type="radio" name="q10" value="D"> D. Always run <code>aws s3 ls</code> first.</label>
+  <label><input type="radio" name="q10" value="D"> D. Always run aws s3 ls first.</label>
       </div>
       <div class="feedback bad">❌ Incorrect.</div>
       <div class="feedback ok">✅ Correct.</div>
@@ -198,42 +198,42 @@
     <div class="card group" data-answer="C">
       <div class="q"><span class="qnum"></span>Automatically reflect local changes in S3 without full re-upload each time?</div>
       <div class="options">
-        <label><input type="radio" name="q11" value="A"> A. <code>aws s3 cp ... --recursive</code></label>
-        <label><input type="radio" name="q11" value="B"> B. <code>aws s3 mv ... --recursive</code></label>
-        <label><input type="radio" name="q11" value="C"> C. <code>aws s3 sync sysops-activity-files/ s3://jipx123website/</code></label>
-        <label><input type="radio" name="q11" value="D"> D. <code>aws s3 ls ...</code></label>
+  <label><input type="radio" name="q11" value="A"> A. aws s3 cp ... --recursive</label>
+  <label><input type="radio" name="q11" value="B"> B. aws s3 mv ... --recursive</label>
+  <label><input type="radio" name="q11" value="C"> C. aws s3 sync sysops-activity-files/ s3://jipx123website/</label>
+  <label><input type="radio" name="q11" value="D"> D. aws s3 ls ...</label>
       </div>
       <div class="feedback bad">❌ Incorrect.</div>
       <div class="feedback ok">✅ Correct.</div>
-      <div class="explain hint"><code>sync</code> detects deltas.</div>
+  <div class="explain hint">sync detects deltas.</div>
     </div>
 
     <!-- Q12 -->
     <div class="card group" data-answer="A">
       <div class="q"><span class="qnum"></span>You delete <code>about.html</code> locally then run <code>aws s3 sync</code> (no flags). What happens in S3?</div>
       <div class="options">
-        <label><input type="radio" name="q12" value="A"> A. <code>about.html</code> stays (no deletion by default).</label>
+  <label><input type="radio" name="q12" value="A"> A. about.html stays (no deletion by default).</label>
         <label><input type="radio" name="q12" value="B"> B. It is deleted automatically.</label>
         <label><input type="radio" name="q12" value="C"> C. Sync fails with error.</label>
         <label><input type="radio" name="q12" value="D"> D. Versioning is disabled.</label>
       </div>
       <div class="feedback bad">❌ Incorrect.</div>
       <div class="feedback ok">✅ Correct.</div>
-      <div class="explain hint">Use <code>--delete</code> to mirror deletions.</div>
+  <div class="explain hint">Use --delete to mirror deletions.</div>
     </div>
 
     <!-- Q13 -->
     <div class="card group" data-answer="D">
       <div class="q"><span class="qnum"></span>Best practice to ensure bucket mirrors local (including deletions)?</div>
       <div class="options">
-        <label><input type="radio" name="q13" value="A"> A. <code>cp --recursive</code></label>
-        <label><input type="radio" name="q13" value="B"> B. <code>mv --recursive</code></label>
-        <label><input type="radio" name="q13" value="C"> C. <code>sync</code> (no flags)</label>
-        <label><input type="radio" name="q13" value="D"> D. <code>sync --delete</code></label>
+  <label><input type="radio" name="q13" value="A"> A. cp --recursive</label>
+  <label><input type="radio" name="q13" value="B"> B. mv --recursive</label>
+  <label><input type="radio" name="q13" value="C"> C. sync (no flags)</label>
+  <label><input type="radio" name="q13" value="D"> D. sync --delete</label>
       </div>
       <div class="feedback bad">❌ Incorrect.</div>
       <div class="feedback ok">✅ Correct.</div>
-      <div class="explain hint"><code>sync --delete</code> keeps S3 identical to local.</div>
+  <div class="explain hint">sync --delete keeps S3 identical to local.</div>
     </div>
 
     <!-- Q14 -->
@@ -255,7 +255,7 @@
       <div class="q"><span class="qnum"></span>After updating <code>index.html</code>, CloudFront still shows old content. Why?</div>
       <div class="options">
         <label><input type="radio" name="q15" value="A"> A. CloudFront is down.</label>
-        <label><input type="radio" name="q15" value="B"> B. OAI lacks <code>s3:GetObject</code>.</label>
+  <label><input type="radio" name="q15" value="B"> B. OAI lacks s3:GetObject.</label>
         <label><input type="radio" name="q15" value="C"> C. Cached at edge due to TTL.</label>
         <label><input type="radio" name="q15" value="D"> D. Website hosting disabled.</label>
       </div>
@@ -271,7 +271,7 @@
         <label><input type="radio" name="q16" value="A"> A. Bucket not versioned.</label>
         <label><input type="radio" name="q16" value="B"> B. Bucket policy does not allow OAI principal.</label>
         <label><input type="radio" name="q16" value="C"> C. Need Elastic IP for origin.</label>
-        <label><input type="radio" name="q16" value="D"> D. Missing <code>--recursive</code> on upload.</label>
+  <label><input type="radio" name="q16" value="D"> D. Missing --recursive on upload.</label>
       </div>
       <div class="feedback bad">❌ Incorrect.</div>
       <div class="feedback ok">✅ Correct.</div>
@@ -282,8 +282,8 @@
     <div class="card group" data-answer="A">
       <div class="q"><span class="qnum"></span>Make a single object public using ACL (not recommended as best practice)?</div>
       <div class="options">
-        <label><input type="radio" name="q17" value="A"> A. <code>aws s3api put-object-acl --bucket jipx123website --key index.html --acl public-read</code></label>
-        <label><input type="radio" name="q17" value="B"> B. Bucket ACL <code>--acl private</code></label>
+  <label><input type="radio" name="q17" value="A"> A. aws s3api put-object-acl --bucket jipx123website --key index.html --acl public-read</label>
+  <label><input type="radio" name="q17" value="B"> B. Bucket ACL --acl private</label>
         <label><input type="radio" name="q17" value="C"> C. Add <code>--recursive</code></label>
         <label><input type="radio" name="q17" value="D"> D. Enable versioning</label>
       </div>
@@ -295,7 +295,7 @@
     <!-- Q18 -->
     <div class="card group" data-answer="A">
       <div class="q"><span class="qnum"></span>Which fields are missing in this policy so public can read objects?</div>
-      <pre><code>{
+      <pre>{
   "Version": "2012-10-17",
   "Statement": [
     {
@@ -303,12 +303,12 @@
       "Resource": "arn:aws:s3:::jipx123website/*"
     }
   ]
-}</code></pre>
+}</pre>
       <div class="options">
-        <label><input type="radio" name="q18" value="A"> A. <code>"Effect": "Allow"</code> and <code>"Principal": "*"</code></label>
-        <label><input type="radio" name="q18" value="B"> B. <code>"Version": "2008-10-17"</code></label>
-        <label><input type="radio" name="q18" value="C"> C. <code>"Action": "s3:PutObject"</code></label>
-        <label><input type="radio" name="q18" value="D"> D. <code>"Resource": "arn:aws:s3:::jipx123website"</code></label>
+  <label><input type="radio" name="q18" value="A"> A. "Effect": "Allow" and "Principal": "*"</label>
+  <label><input type="radio" name="q18" value="B"> B. "Version": "2008-10-17"</label>
+  <label><input type="radio" name="q18" value="C"> C. "Action": "s3:PutObject"</label>
+  <label><input type="radio" name="q18" value="D"> D. "Resource": "arn:aws:s3:::jipx123website"</label>
       </div>
       <div class="feedback bad">❌ Incorrect.</div>
       <div class="feedback ok">✅ Correct.</div>
