@@ -42,8 +42,121 @@
   <h1>AWS CLI Lab – EC2 <code>run-instances</code> & Bastion/NAT MCQ</h1>
   <p class="lead">11 questions covering AWS CLI, Bastion Hosts, and NAT Gateways. Includes an inline architecture diagram.</p>
 
-  <!-- Q1–Q10 trimmed for brevity (already included before) -->
-  <!-- Keep your Q1–Q10 sections here -->
+  <!-- Q1 -->
+  <section class="qcard" data-answer="B">
+    <div class="badge">Q1</div>
+    <div class="qtitle">What does the --query 'Instances[*].InstanceId' parameter do?</div>
+    <div class="cmdlabel">Full command reference</div>
+    <pre><code>--query 'Instances[*].InstanceId'</code></pre>
+    <div class="choices"><label><input type="radio" name="q1" value="A">A. Filters the AMI IDs used for the instance</label><label><input type="radio" name="q1" value="B">B. Returns only the instance ID from the run-instances response</label><label><input type="radio" name="q1" value="C">C. Specifies the instance type to launch</label><label><input type="radio" name="q1" value="D">D. Returns the public DNS name of the instance</label></div>
+    <div class="actions"><button onclick="checkOne(this)">Check</button><button onclick="clearOne(this)">Clear</button></div>
+    <div class="result"></div>
+  </section>
+
+  <!-- Q2 -->
+  <section class="qcard" data-answer="C">
+    <div class="badge">Q2</div>
+    <div class="qtitle">Why is the command wrapped in INSTANCE=$( ... ) ?</div>
+    <pre><code>INSTANCE=$( aws ec2 run-instances ... )</code></pre>
+    <div class="choices"><label><input type="radio" name="q2" value="A">A. To save the instance’s private IP in a variable</label><label><input type="radio" name="q2" value="B">B. To execute the command in the background</label><label><input type="radio" name="q2" value="C">C. To store the command’s output (Instance ID) in the INSTANCE variable</label><label><input type="radio" name="q2" value="D">D. To pipe the instance ID into another script</label></div>
+    <div class="actions"><button onclick="checkOne(this)">Check</button><button onclick="clearOne(this)">Clear</button></div>
+    <div class="result"></div>
+  </section>
+
+  <!-- Q3 -->
+  <section class="qcard" data-answer="C">
+    <div class="badge">Q3</div>
+    <div class="qtitle">What does --output text ensure in this command?</div>
+    <pre><code>--output text</code></pre>
+    <div class="choices"><label><input type="radio" name="q3" value="A">A. It formats the output in JSON</label><label><input type="radio" name="q3" value="B">B. It formats the output in YAML</label><label><input type="radio" name="q3" value="C">C. It outputs only the raw text (Instance ID)</label><label><input type="radio" name="q3" value="D">D. It writes the output to a log file</label></div>
+    <div class="actions"><button onclick="checkOne(this)">Check</button><button onclick="clearOne(this)">Clear</button></div>
+    <div class="result"></div>
+  </section>
+
+  <!-- Q4 -->
+  <section class="qcard" data-answer="B">
+    <div class="badge">Q4</div>
+    <div class="qtitle">What is the purpose of echo $INSTANCE after the command?</div>
+    <pre><code>echo $INSTANCE</code></pre>
+    <div class="choices"><label><input type="radio" name="q4" value="A">A. It runs the instance again with the same ID</label><label><input type="radio" name="q4" value="B">B. It prints the captured instance ID to the console</label><label><input type="radio" name="q4" value="C">C. It verifies that the subnet ID was correct</label><label><input type="radio" name="q4" value="D">D. It saves the instance ID into a file</label></div>
+    <div class="actions"><button onclick="checkOne(this)">Check</button><button onclick="clearOne(this)">Clear</button></div>
+    <div class="result"></div>
+  </section>
+
+  <!-- Q5 -->
+  <section class="qcard" data-answer="B">
+    <div class="badge">Q5</div>
+    <div class="qtitle">Which file is executed as part of the instance’s bootstrapping process?</div>
+    <div class="choices"><label><input type="radio" name="q5" value="A">A. /etc/init.d/httpd</label><label><input type="radio" name="q5" value="B">B. /home/ec2-user/UserData.txt</label><label><input type="radio" name="q5" value="C">C. /var/www/html/index.html</label><label><input type="radio" name="q5" value="D">D. /home/ec2-user/Instance.txt</label></div>
+    <div class="actions"><button onclick="checkOne(this)">Check</button><button onclick="clearOne(this)">Clear</button></div>
+    <div class="result"></div>
+  </section>
+
+  <!-- Q6 -->
+  <section class="qcard" data-answer="B">
+    <div class="badge">Q6</div>
+    <div class="qtitle">What does the --tag-specifications option do?</div>
+    <pre><code>--tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=Web Server}]'</code></pre>
+    <div class="choices"><label><input type="radio" name="q6" value="A">A. It assigns the instance to the Web Server security group</label><label><input type="radio" name="q6" value="B">B. It tags the instance with a key Name and value Web Server</label><label><input type="radio" name="q6" value="C">C. It creates a custom AMI called Web Server</label><label><input type="radio" name="q6" value="D">D. It sets the hostname of the instance to Web Server</label></div>
+    <div class="actions"><button onclick="checkOne(this)">Check</button><button onclick="clearOne(this)">Clear</button></div>
+    <div class="result"></div>
+  </section>
+
+  <!-- Q7 -->
+  <section class="qcard" data-answer="B">
+    <div class="badge">Q7</div>
+    <div class="qtitle">What is the primary purpose of a Bastion Host?</div>
+    <div class="choices">
+      <label><input type="radio" name="q7" value="A">A. Allow private EC2 instances to download updates from the internet</label>
+      <label><input type="radio" name="q7" value="B">B. Provide a controlled entry point for SSH/RDP access into private EC2 instances</label>
+      <label><input type="radio" name="q7" value="C">C. Route outbound traffic from a private subnet to the internet</label>
+      <label><input type="radio" name="q7" value="D">D. Replace the Internet Gateway for secure connections</label>
+    </div>
+    <div class="actions"><button onclick="checkOne(this)">Check</button><button onclick="clearOne(this)">Clear</button></div>
+    <div class="result"></div>
+  </section>
+
+  <!-- Q8 -->
+  <section class="qcard" data-answer="C">
+    <div class="badge">Q8</div>
+    <div class="qtitle">Which AWS resource allows private EC2 instances to initiate outbound internet connections?</div>
+    <div class="choices">
+      <label><input type="radio" name="q8" value="A">A. Bastion Host</label>
+      <label><input type="radio" name="q8" value="B">B. Internet Gateway</label>
+      <label><input type="radio" name="q8" value="C">C. NAT Gateway</label>
+      <label><input type="radio" name="q8" value="D">D. Elastic Load Balancer</label>
+    </div>
+    <div class="actions"><button onclick="checkOne(this)">Check</button><button onclick="clearOne(this)">Clear</button></div>
+    <div class="result"></div>
+  </section>
+
+  <!-- Q9 -->
+  <section class="qcard" data-answer="B">
+    <div class="badge">Q9</div>
+    <div class="qtitle">Can private EC2 instances reach the internet “through” the Bastion Host?</div>
+    <div class="choices">
+      <label><input type="radio" name="q9" value="A">A. Yes, the Bastion forwards traffic like a proxy</label>
+      <label><input type="radio" name="q9" value="B">B. No, Bastion Hosts only allow SSH/RDP administrative access</label>
+      <label><input type="radio" name="q9" value="C">C. Yes, but only if Elastic IP is attached</label>
+      <label><input type="radio" name="q9" value="D">D. No, unless the Bastion Host is converted into a NAT Gateway</label>
+    </div>
+    <div class="actions"><button onclick="checkOne(this)">Check</button><button onclick="clearOne(this)">Clear</button></div>
+    <div class="result"></div>
+  </section>
+
+  <!-- Q10 -->
+  <section class="qcard" data-answer="C">
+    <div class="badge">Q10</div>
+    <div class="qtitle">What is the best practice for a VPC with private EC2s that need SSH access and outbound internet?</div>
+    <div class="choices">
+      <label><input type="radio" name="q10" value="A">A. Deploy only a Bastion Host in the private subnet</label>
+      <label><input type="radio" name="q10" value="B">B. Deploy only a NAT Gateway in the private subnet</label>
+      <label><input type="radio" name="q10" value="C">C. Deploy a Bastion Host in the public subnet + NAT Gateway in the public subnet</label>
+      <label><input type="radio" name="q10" value="D">D. Deploy both Bastion Host and NAT Gateway in the private subnet</label>
+    </div>
+    <div class="actions"><button onclick="checkOne(this)">Check</button><button onclick="clearOne(this)">Clear</button></div>
+    <div class="result"></div>
+  </section>
 
   <!-- Q11 -->
   <section class="qcard" data-answer="C">
@@ -56,7 +169,7 @@
       <label><input type="radio" name="q11" value="D">D. Assign Elastic IPs to all private EC2s</label>
     </div>
 
-    <!-- Inline SVG Diagram -->
+    <!-- Inline SVG diagram -->
     <div class="diagram-wrap" aria-label="Bastion + NAT Gateway Architecture Diagram">
       <svg viewBox="0 0 920 380" role="img">
         <defs>
@@ -67,53 +180,30 @@
             <path d="M 0 0 L 10 5 L 0 10 z" fill="#a9b2c3"/>
           </marker>
         </defs>
-
-        <!-- VPC boundary -->
         <rect x="10" y="10" width="900" height="360" rx="14" class="box"/>
         <text x="20" y="32">VPC (10.0.0.0/16)</text>
-
-        <!-- Internet / IGW -->
         <text x="800" y="40">Internet</text>
         <circle cx="860" cy="36" r="12" fill="#25385f" stroke="#33507e"/>
         <text x="840" y="68">IGW</text>
-
-        <!-- Public Subnet -->
         <rect x="30" y="70" width="860" height="120" rx="10" class="box pub"/>
         <text x="40" y="92">Public Subnet (10.0.1.0/24)</text>
-        <!-- Bastion -->
         <rect x="60" y="110" width="170" height="60" rx="8" class="node"/>
         <text x="70" y="130">Bastion Host</text>
         <text x="70" y="148">EC2 (EIP)</text>
-        <!-- NAT GW -->
         <rect x="320" y="110" width="170" height="60" rx="8" class="node"/>
         <text x="330" y="130">NAT Gateway</text>
-        <text x="330" y="148">Public Subnet</text>
         <line x1="490" y1="140" x2="820" y2="140" class="arrow"/>
         <text x="610" y="130">0.0.0.0/0 → IGW</text>
-
-        <!-- Private Subnet -->
         <rect x="30" y="220" width="860" height="120" rx="10" class="box priv"/>
         <text x="40" y="242">Private Subnet (10.0.2.0/24)</text>
-        <!-- Private EC2 -->
         <rect x="60" y="260" width="200" height="60" rx="8" class="node"/>
         <text x="70" y="280">Private EC2</text>
-        <text x="70" y="298">App/DB</text>
-
-        <!-- Admin PC to Bastion (SSH) -->
         <rect x="60" y="20" width="150" height="34" rx="6" class="node"/>
         <text x="70" y="42">Admin PC (SSH)</text>
         <line x1="135" y1="54" x2="145" y2="110" class="arrow-muted"/>
-        <text x="90" y="86">SSH (22)</text>
-
-        <!-- SSH from Bastion to Private EC2 -->
         <line x1="145" y1="170" x2="160" y2="260" class="arrow-muted"/>
-        <text x="140" y="220">SSH (22)</text>
-
-        <!-- Outbound route: Private → NAT GW → IGW → Internet -->
         <line x1="260" y1="290" x2="320" y2="140" class="arrow"/>
-        <text x="270" y="250">0.0.0.0/0 → NAT GW</text>
         <line x1="405" y1="110" x2="850" y2="36" class="arrow"/>
-        <text x="610" y="86">Outbound to Internet</text>
       </svg>
       <div class="diagram-caption">Best practice: SSH via Bastion; outbound internet from private subnet via NAT Gateway (not via Bastion).</div>
     </div>
