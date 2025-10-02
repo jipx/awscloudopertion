@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AWS CLI Lab – EC2 & Bastion/NAT MCQ (Q1–Q11 + Diagram)</title>
+<style>
+  :root { --bg:#0b1220; --card:#111a2a; --ink:#e7ecf3; --muted:#a9b2c3; --accent:#7bd389; --wrong:#ff6b6b; --code:#0f1525; }
+  html,body { margin:0; padding:0; background:var(--bg); color:var(--ink); font:16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+  .wrap { max-width:1000px; margin:40px auto; padding:0 20px 80px; }
+  h1 { font-size:1.9rem; margin:0 0 8px; }
+  p.lead { color:var(--muted); margin:0 0 24px; }
+  .qcard { background:var(--card); border:1px solid #1a2740; border-radius:14px; padding:18px 18px 8px; margin:18px 0 22px; }
+  .qtitle { font-weight:700; margin-bottom:10px; }
+  .cmdlabel { color:var(--muted); font-size:0.95rem; margin:12px 0 6px; }
+  pre { background:var(--code); color:#d7e4ff; border:1px solid #1a2740; border-radius:10px; padding:12px; overflow:auto; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size:0.92rem; }
+  .choices { margin:10px 0 6px; display:grid; gap:8px; }
+  .choices label { display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border:1px solid #1a2740; border-radius:10px; background:#0f1729; cursor:pointer; }
+  .choices input { margin-top:2px; }
+  .actions { display:flex; gap:10px; margin:12px 0 4px; }
+  button { background:#1e2b47; color:var(--ink); border:1px solid #2a3a60; border-radius:10px; padding:8px 12px; cursor:pointer; }
+  button:hover { background:#243459; }
+  .result { margin-top:8px; font-weight:700; }
+  .ok { color:var(--accent); }
+  .bad { color:var(--wrong); }
+  .footer { color:var(--muted); margin-top:28px; font-size:0.9rem; }
+  .badge { display:inline-block; background:#142038; border:1px solid #213156; border-radius:999px; padding:4px 10px; color:#bcd; font-size:0.85rem; margin-bottom:6px; }
+  .diagram-wrap { background:#0f1729; border:1px solid #1a2740; border-radius:12px; padding:12px; margin:12px 0 6px; }
+  .diagram-caption { color:var(--muted); font-size:0.9rem; margin-top:6px; }
+  svg text { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; fill:#dbe7ff; font-size:12px; }
+  .box { fill:#12203a; stroke:#2a3a60; }
+  .pub { fill:#142a3a; }
+  .priv { fill:#1a2338; }
+  .node { fill:#1d2b4a; stroke:#33507e; }
+  .arrow { stroke:#7bd389; stroke-width:2; marker-end:url(#arrowHead); }
+  .arrow-muted { stroke:#a9b2c3; stroke-width:2; marker-end:url(#arrowHeadMuted); stroke-dasharray:4 3; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>AWS CLI Lab – EC2 <code>run-instances</code> & Bastion/NAT MCQ</h1>
+  <p class="lead">11 questions covering AWS CLI, Bastion Hosts, and NAT Gateways. Includes an inline architecture diagram.</p>
+
+  <!-- Q1–Q10 trimmed for brevity (already included before) -->
+  <!-- Keep your Q1–Q10 sections here -->
+
+  <!-- Q11 -->
+  <section class="qcard" data-answer="C">
+    <div class="badge">Q11 (Case Study)</div>
+    <div class="qtitle">Mom & Pop Café runs private EC2s with a Bastion Host already in place. They need the private EC2s to download updates from the internet. What should they add?</div>
+    <div class="choices">
+      <label><input type="radio" name="q11" value="A">A. Add another Bastion Host in the private subnet</label>
+      <label><input type="radio" name="q11" value="B">B. Attach an Internet Gateway directly to the private subnet</label>
+      <label><input type="radio" name="q11" value="C">C. Add a NAT Gateway in the public subnet and update the private subnet route table</label>
+      <label><input type="radio" name="q11" value="D">D. Assign Elastic IPs to all private EC2s</label>
+    </div>
+
+    <!-- Inline SVG Diagram -->
+    <div class="diagram-wrap" aria-label="Bastion + NAT Gateway Architecture Diagram">
+      <svg viewBox="0 0 920 380" role="img">
+        <defs>
+          <marker id="arrowHead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#7bd389"/>
+          </marker>
+          <marker id="arrowHeadMuted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#a9b2c3"/>
+          </marker>
+        </defs>
+
+        <!-- VPC boundary -->
+        <rect x="10" y="10" width="900" height="360" rx="14" class="box"/>
+        <text x="20" y="32">VPC (10.0.0.0/16)</text>
+
+        <!-- Internet / IGW -->
+        <text x="800" y="40">Internet</text>
+        <circle cx="860" cy="36" r="12" fill="#25385f" stroke="#33507e"/>
+        <text x="840" y="68">IGW</text>
+
+        <!-- Public Subnet -->
+        <rect x="30" y="70" width="860" height="120" rx="10" class="box pub"/>
+        <text x="40" y="92">Public Subnet (10.0.1.0/24)</text>
+        <!-- Bastion -->
+        <rect x="60" y="110" width="170" height="60" rx="8" class="node"/>
+        <text x="70" y="130">Bastion Host</text>
+        <text x="70" y="148">EC2 (EIP)</text>
+        <!-- NAT GW -->
+        <rect x="320" y="110" width="170" height="60" rx="8" class="node"/>
+        <text x="330" y="130">NAT Gateway</text>
+        <text x="330" y="148">Public Subnet</text>
+        <line x1="490" y1="140" x2="820" y2="140" class="arrow"/>
+        <text x="610" y="130">0.0.0.0/0 → IGW</text>
+
+        <!-- Private Subnet -->
+        <rect x="30" y="220" width="860" height="120" rx="10" class="box priv"/>
+        <text x="40" y="242">Private Subnet (10.0.2.0/24)</text>
+        <!-- Private EC2 -->
+        <rect x="60" y="260" width="200" height="60" rx="8" class="node"/>
+        <text x="70" y="280">Private EC2</text>
+        <text x="70" y="298">App/DB</text>
+
+        <!-- Admin PC to Bastion (SSH) -->
+        <rect x="60" y="20" width="150" height="34" rx="6" class="node"/>
+        <text x="70" y="42">Admin PC (SSH)</text>
+        <line x1="135" y1="54" x2="145" y2="110" class="arrow-muted"/>
+        <text x="90" y="86">SSH (22)</text>
+
+        <!-- SSH from Bastion to Private EC2 -->
+        <line x1="145" y1="170" x2="160" y2="260" class="arrow-muted"/>
+        <text x="140" y="220">SSH (22)</text>
+
+        <!-- Outbound route: Private → NAT GW → IGW → Internet -->
+        <line x1="260" y1="290" x2="320" y2="140" class="arrow"/>
+        <text x="270" y="250">0.0.0.0/0 → NAT GW</text>
+        <line x1="405" y1="110" x2="850" y2="36" class="arrow"/>
+        <text x="610" y="86">Outbound to Internet</text>
+      </svg>
+      <div class="diagram-caption">Best practice: SSH via Bastion; outbound internet from private subnet via NAT Gateway (not via Bastion).</div>
+    </div>
+
+    <div class="actions"><button onclick="checkOne(this)">Check</button><button onclick="clearOne(this)">Clear</button></div>
+    <div class="result"></div>
+  </section>
+
+  <div class="actions"><button onclick="checkAll()">Check All</button><button onclick="clearAll()">Clear All</button></div>
+  <p class="footer">Answer key: Q1=B, Q2=C, Q3=C, Q4=B, Q5=B, Q6=B, Q7=B, Q8=C, Q9=B, Q10=C, Q11=C</p>
+</div>
+
+<script>
+  function getSelected(section) { const radios = section.querySelectorAll('input[type="radio"]'); for (const r of radios) if (r.checked) return r.value; return null; }
+  function show(section, ok) { const res = section.querySelector('.result'); if (!res) return; res.className = 'result ' + (ok ? 'ok' : 'bad'); res.textContent = ok ? '✅ Correct' : '❌ Incorrect'; }
+  function checkOne(btn) { const section = btn.closest('.qcard'); const ans = section.dataset.answer; const sel = getSelected(section); if (!sel) { show(section, false); section.querySelector('.result').textContent = 'Please select an option.'; return; } show(section, sel === ans); }
+  function clearOne(btn) { const section = btn.closest('.qcard'); section.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false); const res = section.querySelector('.result'); if (res) { res.textContent = ''; res.className = 'result'; } }
+  function checkAll() { document.querySelectorAll('.qcard').forEach(sec => { const ans = sec.dataset.answer; const sel = getSelected(sec); if (!sel) { show(sec, false); sec.querySelector('.result').textContent = 'Please select an option.'; } else show(sec, sel === ans); }); }
+  function clearAll() { document.querySelectorAll('.qcard').forEach(sec => { sec.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false); const res = sec.querySelector('.result'); if (res) { res.textContent = ''; res.className = 'result'; } }); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+</script>
+</body>
+</html>
