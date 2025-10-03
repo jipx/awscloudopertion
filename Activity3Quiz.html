@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AWS Lab Full Quiz – CLI & CloudFormation Troubleshooting (20)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root{
+      --brand:#0a72d1;
+      --card:#ffffff;
+      --bg:#f0f2f5;
+      --muted:#6b7280;
+      --ok:#16a34a;
+      --bad:#dc2626;
+      --info:#093a6a;
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      margin:0; padding:24px;
+      background:var(--bg); color:#111827;
+    }
+    .wrap{max-width:1000px;margin:0 auto}
+    h1{margin:0 0 16px;text-align:center;color:var(--brand);font-size:28px}
+    p.lead{margin:0 auto 22px;max-width:760px;color:var(--muted);text-align:center}
+    .question-card{
+      background:var(--card);
+      padding:16px 18px; margin:14px 0;
+      border-radius:12px;
+      box-shadow:0 2px 8px rgba(0,0,0,.06);
+      border-left:6px solid var(--brand);
+    }
+    h2{font-size:18px;margin:0 0 10px}
+    .options label{
+      display:block;
+      font-size:16px;
+      margin:8px 0;
+      padding:10px 12px;
+      background:#fafafa;
+      border:1px solid #e5e7eb;
+      border-radius:8px;
+      cursor:pointer;
+      transition:background .15s, border-color .15s;
+    }
+    .options label:hover{background:#eef6ff;border-color:#cfe6ff}
+    .options input[type="radio"]{margin-right:10px}
+    pre{
+      background:#0b1220;color:#e6e9ef;
+      padding:10px 12px;border-radius:8px;overflow:auto
+    }
+    code{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;}
+    .explanation{
+      display:none;margin-top:10px;
+      padding:12px;border-left:4px solid var(--brand);
+      background:#f7f9fc;border-radius:8px
+    }
+    .actions{display:flex;gap:10px;justify-content:center;margin:22px 0}
+    button{
+      appearance:none;border:0;border-radius:10px;
+      padding:12px 18px;font-size:16px;cursor:pointer;
+      background:var(--brand);color:white
+    }
+    button.secondary{background:#374151}
+    button:hover{filter:brightness(0.95)}
+    .result{
+      display:none;margin-top:18px;
+      text-align:center;font-weight:700;
+      padding:14px;border-radius:10px
+    }
+    .result.ok{background:#dcfce7;color:#065f46;border:1px solid #86efac}
+    .result.bad{background:#fee2e2;color:#7f1d1d;border:1px solid #fecaca}
+    .footer-note{color:var(--muted);text-align:center;margin-top:8px;font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>AWS Lab Quiz – CLI & CloudFormation Troubleshooting</h1>
+    <p class="lead">Answer all 20 questions, then click <b>Submit</b>. You'll get per-question feedback with explanations and a final score.</p>
+
+    <form id="quizForm">
+
+      <!-- Questions Q1..Q20 -->
+      <div class="question-card" id="q1">
+        <h2>Q1. Your script fails with <code>InvalidSubnetID.NotFound</code>. Which CLI check most directly confirms whether the referenced subnet exists in the target region?</h2>
+        <div class="options">
+          <label><input type="radio" name="q1" value="A"> <code>aws ec2 describe-subnets --subnet-ids subnet-1234abcd --region us-east-1</code></label>
+          <label><input type="radio" name="q1" value="B"> <code>aws ec2 describe-vpcs --region us-east-1</code></label>
+          <label><input type="radio" name="q1" value="C"> <code>aws ec2 describe-availability-zones --region us-east-1</code></label>
+          <label><input type="radio" name="q1" value="D"> <code>aws ec2 describe-images --owners amazon --region us-east-1</code></label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q2">
+        <h2>Q2. A script runs in <code>us-east-1</code> but filters for Availability Zone <code>eu-west-2a</code>. What’s the expected outcome when launching the instance?</h2>
+        <div class="options">
+          <label><input type="radio" name="q2" value="A"> It succeeds, AZ names are global.</label>
+          <label><input type="radio" name="q2" value="B"> Fails with <code>InvalidSubnetID.NotFound</code> or placement-related errors.</label>
+          <label><input type="radio" name="q2" value="C"> It silently picks a valid AZ.</label>
+          <label><input type="radio" name="q2" value="D"> It creates a new subnet automatically.</label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q3">
+        <h2>Q3. Best way to fetch the latest Amazon Linux 2 AMI for a region without hardcoding?</h2>
+        <div class="options">
+          <label><input type="radio" name="q3" value="A"> <code>aws ssm get-parameters --names "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"</code></label>
+          <label><input type="radio" name="q3" value="B"> <code>aws ec2 describe-images --owners amazon | head -1</code></label>
+          <label><input type="radio" name="q3" value="C"> Use yesterday’s AMI from us-west-2 in any region.</label>
+          <label><input type="radio" name="q3" value="D"> Re-use the last AMI ID you copied from the console.</label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q4">
+        <h2>Q4. Your script shows <code>aws: error: argument --vpc-id: expected one argument</code> when creating a security group. What does this most likely indicate?</h2>
+        <div class="options">
+          <label><input type="radio" name="q4" value="A"> The VPC ID variable was empty due to a failed lookup.</label>
+          <label><input type="radio" name="q4" value="B"> The VPC ID was too new.</label>
+          <label><input type="radio" name="q4" value="C"> Security groups don’t need a VPC.</label>
+          <label><input type="radio" name="q4" value="D"> The CLI version cannot create SGs.</label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q5">
+        <h2>Q5. Which port should be opened for HTTP on your web server’s security group?</h2>
+        <div class="options">
+          <label><input type="radio" name="q5" value="A"> 22</label>
+          <label><input type="radio" name="q5" value="B"> 80</label>
+          <label><input type="radio" name="q5" value="C"> 443</label>
+          <label><input type="radio" name="q5" value="D"> 3306</label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q6">
+        <h2>Q6. You get <code>InvalidAMIID.NotFound</code> when launching. What’s the fastest fix aligned with best practices?</h2>
+        <div class="options">
+          <label><input type="radio" name="q6" value="A"> Switch instance type.</label>
+          <label><input type="radio" name="q6" value="B"> Use SSM Parameter Store to query the region’s latest AL2 AMI.</label>
+          <label><input type="radio" name="q6" value="C"> Retry 5 times.</label>
+          <label><input type="radio" name="q6" value="D"> Copy the AMI ID from a different region.</label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q7">
+        <h2>Q7. Which command lists your key pairs in the current region?</h2>
+        <div class="options">
+          <label><input type="radio" name="q7" value="A"> <code>aws ec2 list-keys</code></label>
+          <label><input type="radio" name="q7" value="B"> <code>aws ec2 describe-key-pairs</code></label>
+          <label><input type="radio" name="q7" value="C"> <code>aws ec2 show-keypairs</code></label>
+          <label><input type="radio" name="q7" value="D"> <code>aws iam list-ssh-keys</code></label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q8">
+        <h2>Q8. You created an instance in <code>us-east-1</code> but try to SSH using a public IP from <code>eu-west-2</code>. Likely cause?</h2>
+        <div class="options">
+          <label><input type="radio" name="q8" value="A"> Wrong SSH key format.</label>
+          <label><input type="radio" name="q8" value="B"> Mixed up instances across regions.</label>
+          <label><input type="radio" name="q8" value="C"> UserData typo.</label>
+          <label><input type="radio" name="q8" value="D"> Disk is full.</label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q9">
+        <h2>Q9. Where do you check output from your EC2 UserData execution on Amazon Linux 2?</h2>
+        <div class="options">
+          <label><input type="radio" name="q9" value="A"> <code>/var/log/secure</code></label>
+          <label><input type="radio" name="q9" value="B"> <code>/var/log/cloud-init-output.log</code></label>
+          <label><input type="radio" name="q9" value="C"> <code>/var/log/httpd/access_log</code></label>
+          <label><input type="radio" name="q9" value="D"> <code>/var/log/yum.log</code></label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q10">
+        <h2>Q10. What’s the correct flag to set the region for a single AWS CLI command?</h2>
+        <div class="options">
+          <label><input type="radio" name="q10" value="A"> <code>--location</code></label>
+          <label><input type="radio" name="q10" value="B"> <code>--region</code></label>
+          <label><input type="radio" name="q10" value="C"> <code>--area</code></label>
+          <label><input type="radio" name="q10" value="D"> <code>--geo</code></label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q11">
+        <h2>Q11. CloudFormation is “declarative”. What does that mean for your templates?</h2>
+        <div class="options">
+          <label><input type="radio" name="q11" value="A"> You write step-by-step CLI commands.</label>
+          <label><input type="radio" name="q11" value="B"> You describe the desired end state; CFN plans order and dependencies.</label>
+          <label><input type="radio" name="q11" value="C"> You must orchestrate creation order manually.</label>
+          <label><input type="radio" name="q11" value="D"> Resources create only if shell scripts succeed.</label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q12">
+        <h2>Q12. Which single command removes all resources created by a given CloudFormation stack?</h2>
+        <div class="options">
+          <label><input type="radio" name="q12" value="A"> <code>aws ec2 terminate-instances</code></label>
+          <label><input type="radio" name="q12" value="B"> <code>aws cloudformation delete-stack --stack-name MyStack</code></label>
+          <label><input type="radio" name="q12" value="C"> <code>aws s3 rb s3://bucket --force</code></label>
+          <label><input type="radio" name="q12" value="D"> <code>aws ec2 delete-security-group</code></label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q13">
+        <h2>Q13. A security group ingress was created for port 8080, but your app listens on port 80. What symptom do you expect?</h2>
+        <div class="options">
+          <label><input type="radio" name="q13" value="A"> SSH works but HTTP times out.</label>
+          <label><input type="radio" name="q13" value="B"> HTTP works, SSH fails.</label>
+          <label><input type="radio" name="q13" value="C"> Both work.</label>
+          <label><input type="radio" name="q13" value="D"> Instance won’t launch.</label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q14">
+        <h2>Q14. Which CLI call reliably retrieves your default VPC ID in a region?</h2>
+        <div class="options">
+          <label><input type="radio" name="q14" value="A"> <code>aws ec2 describe-vpcs --filters Name=isDefault,Values=true --query "Vpcs[0].VpcId"</code></label>
+          <label><input type="radio" name="q14" value="B"> <code>aws ec2 get-default-vpc</code></label>
+          <label><input type="radio" name="q14" value="C"> <code>aws ec2 show-vpc default</code></label>
+          <label><input type="radio" name="q14" value="D"> <code>aws iam list-vpcs</code></label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q15">
+        <h2>Q15. Your UserData installs LAMP. After boot, HTTP 200 works but <code>phpinfo()</code> 404s. Likely cause?</h2>
+        <div class="options">
+          <label><input type="radio" name="q15" value="A"> <code>phpinfo.php</code> file wasn’t created in <code>/var/www/html/</code>.</label>
+          <label><input type="radio" name="q15" value="B"> Security group lacks port 22.</label>
+          <label><input type="radio" name="q15" value="C"> Wrong AMI architecture.</label>
+          <label><input type="radio" name="q15" value="D"> Key pair mismatch.</label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q16">
+        <h2>Q16. In Bash, you extracted IDs using <code>grep</code>/<code>cut</code>. What’s a safer alternative to parse AWS CLI JSON?</h2>
+        <div class="options">
+          <label><input type="radio" name="q16" value="A"> Use <code>--output text</code> and <code>awk</code> only.</label>
+          <label><input type="radio" name="q16" value="B"> Use <code>--query</code> with JMESPath to select exact fields.</label>
+          <label><input type="radio" name="q16" value="C"> Rely on whitespace formatting.</label>
+          <label><input type="radio" name="q16" value="D"> Count braces in JSON by hand.</label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q17">
+        <h2>Q17. A CFN stack failed mid-deploy. What built-in feature helps avoid partial, orphaned resources?</h2>
+        <div class="options">
+          <label><input type="radio" name="q17" value="A"> Manual cleanup wizard.</label>
+          <label><input type="radio" name="q17" value="B"> Automatic rollback on failure.</label>
+          <label><input type="radio" name="q17" value="C"> S3 Lifecycle rules.</label>
+          <label><input type="radio" name="q17" value="D"> CloudTrail retention.</label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q18">
+        <h2>Q18. You need to view an instance’s public IP and state quickly. Which query is most direct?</h2>
+        <div class="options">
+          <label><input type="radio" name="q18" value="A"> <code>aws ec2 describe-instances --query "Reservations[*].Instances[*].[InstanceId,PublicIpAddress,State.Name]"</code></label>
+          <label><input type="radio" name="q18" value="B"> <code>aws ec2 list-public-ips</code></label>
+          <label><input type="radio" name="q18" value="C"> <code>aws ec2 show-instances</code></label>
+          <label><input type="radio" name="q18" value="D"> <code>aws ssm describe-instance-information</code></label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q19">
+        <h2>Q19. Your script tags an instance with Name=mompopcafeserver but it doesn’t appear. Which filter shows only running instances with that Name?</h2>
+        <div class="options">
+          <label><input type="radio" name="q19" value="A"> <code>aws ec2 describe-instances --filters Name=tag:Name,Values=mompopcafeserver Name=instance-state-name,Values=running</code></label>
+          <label><input type="radio" name="q19" value="B"> <code>aws ec2 describe-instances --filters Name=Name,Values=mompopcafeserver</code></label>
+          <label><input type="radio" name="q19" value="C"> <code>aws ec2 list-tags mompopcafeserver</code></label>
+          <label><input type="radio" name="q19" value="D"> <code>aws ec2 show-tags Name=mompopcafeserver</code></label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="question-card" id="q20">
+        <h2>Q20. In a CFN template, how do you pass a Security Group ID created in the same stack to an EC2 resource?</h2>
+        <div class="options">
+          <label><input type="radio" name="q20" value="A"> Copy/paste the ID after stack creation.</label>
+          <label><input type="radio" name="q20" value="B"> Use <code>!Ref</code> or <code>!GetAtt</code> to reference the SG resource.</label>
+          <label><input type="radio" name="q20" value="C"> Hardcode the ID from another region.</label>
+          <label><input type="radio" name="q20" value="D"> Export to S3 and re-import.</label>
+        </div>
+        <div class="explanation"></div>
+      </div>
+
+      <div class="actions">
+        <button type="button" onclick="checkAnswers()">Submit</button>
+        <button type="button" class="secondary" onclick="resetQuiz()">Retry</button>
+      </div>
+    </form>
+
+    <div id="score" class="result"></div>
+    <p class="footer-note">Tip: You can inspect CLI JSON with <code>--output json</code> and select fields using <code>--query</code> (JMESPath).</p>
+  </div>
+
+  <script>
+    const answers = {
+      q1:{c:"A", e:`Use <code>describe-subnets</code> with the specific ID in the correct region. This confirms existence and avoids false positives from other regions.
+<pre><code>aws ec2 describe-subnets --subnet-ids subnet-1234abcd --region us-east-1 --output json</code></pre>
+If the call returns empty, the ID is wrong for that region or you lack permissions.`},
+
+      q2:{c:"B", e:`Availability Zones are region-scoped. Filtering for <code>eu-west-2a</code> while operating in <code>us-east-1</code> will not match any subnets/AZs and your launch fails.
+Fix by aligning region + AZ/subnet: ensure the subnet’s AZ matches your target region.`},
+
+      q3:{c:"A", e:`The SSM public parameter always tracks the latest AL2 AMI for each region, avoiding hardcoding.
+<pre><code>aws ssm get-parameters --names "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2" --region us-east-1 --query "Parameters[0].Value" --output text</code></pre>
+This is the recommended approach for portability.`},
+
+      q4:{c:"A", e:`“expected one argument” for <code>--vpc-id</code> means your VPC variable was empty. The earlier lookup likely failed (e.g., tag mismatch, wrong region).
+Add guards to fail fast if VPC is blank and print diagnostics.`},
+
+      q5:{c:"B", e:`HTTP = 80, HTTPS = 443, SSH = 22, MySQL/MariaDB = 3306. To serve a web page over HTTP, allow inbound 80 (and ideally restrict CIDRs as needed).
+If your app listens on 80 but only 8080 is open, the browser will time out.`},
+
+      q6:{c:"B", e:`AMI IDs are region-specific. Using SSM avoids drift across regions:
+<pre><code>aws ssm get-parameters --names "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2" --region $REGION</code></pre>
+Then pass the value to <code>run-instances</code>.`},
+
+      q7:{c:"B", e:`Key pairs are listed with <code>describe-key-pairs</code>. Remember they’re per-region.
+<pre><code>aws ec2 describe-key-pairs --region us-east-1 --query "KeyPairs[*].KeyName"</code></pre>`},
+
+      q8:{c:"B", e:`Mixing public IPs across regions is a common troubleshooting gap. Always confirm the instance’s region before SSH:
+<pre><code>aws ec2 describe-instances --region us-east-1 --query "Reservations[].Instances[].PublicIpAddress"</code></pre>`},
+
+      q9:{c:"B", e:`Cloud-init logs user data processing here:
+<pre><code>sudo tail -n 200 /var/log/cloud-init-output.log</code></pre>
+Look for package errors, permission issues, and service start failures.`},
+
+      q10:{c:"B", e:`Use <code>--region</code> to override per command:
+<pre><code>aws ec2 describe-instances --region us-east-1</code></pre>
+You can also set a default in <code>~/.aws/config</code>.`},
+
+      q11:{c:"B", e:`Declarative means you model the desired state; the engine computes a plan and handles ordering/rollbacks. This reduces imperative glue code and human error.
+It also enables drift detection and repeatable deployments.`},
+
+      q12:{c:"B", e:`Deleting the stack tears down dependent resources in the right order:
+<pre><code>aws cloudformation delete-stack --stack-name MomPopCafe</code></pre>
+This is safer than ad‑hoc deletes with the EC2 API.`},
+
+      q13:{c:"A", e:`If only 8080 is open, HTTP on 80 will time out while SSH (22) still works (assuming 22 is allowed). Align ingress ports with your app listener.`},
+
+      q14:{c:"A", e:`Query the default VPC via filter:
+<pre><code>aws ec2 describe-vpcs --filters Name=isDefault,Values=true --query "Vpcs[0].VpcId" --output text</code></pre>
+Always scope to the correct region.`},
+
+      q15:{c:"A", e:`If <code>phpinfo.php</code> was never written, Apache serves 404. Ensure user data creates it:
+<pre><code>echo "&lt;?php phpinfo(); ?&gt;" | sudo tee /var/www/html/phpinfo.php</code></pre>
+Also verify file perms/SELinux as needed.`},
+
+      q16:{c:"B", e:`Prefer JMESPath queries for stable parsing:
+<pre><code>aws ec2 describe-subnets --query "Subnets[0].SubnetId" --output text</code></pre>
+Grep/cut are brittle against JSON formatting changes.`},
+
+      q17:{c:"B", e:`CloudFormation rolls back failed stacks automatically (unless disabled), preventing partial resource sprawl.
+You can inspect failure events with <code>describe-stack-events</code>.`},
+
+      q18:{c:"A", e:`Select only what you need with <code>--query</code>:
+<pre><code>aws ec2 describe-instances --query "Reservations[*].Instances[*].[InstanceId,PublicIpAddress,State.Name]" --output table</code></pre>
+This is fast for spot checks.`},
+
+      q19:{c:"A", e:`Combine tag and state filters to narrow the results:
+<pre><code>aws ec2 describe-instances \\
+  --filters Name=tag:Name,Values=mompopcafeserver Name=instance-state-name,Values=running</code></pre>`},
+
+      q20:{c:"B", e:`Use intrinsic functions to reference resources within the same stack:
+<pre><code>SecurityGroupIds:
+  - !Ref WebSg
+# or
+  - !GetAtt WebSg.GroupId</code></pre>
+This keeps templates portable and dependency-safe.`},
+    };
+
+    function checkAnswers(){
+      let correct = 0;
+      const total = Object.keys(answers).length;
+
+      for (const q in answers){
+        const sel = document.querySelector(`input[name="${q}"]:checked`);
+        const block = document.querySelector(`#${q} .explanation`);
+        const right = answers[q].c;
+        const exp = answers[q].e;
+
+        if(!block) continue;
+        block.style.display = "block";
+
+        if(!sel){
+          block.innerHTML = `❌ No answer selected.<br>✅ Correct answer: <b>${right}</b><br>${exp}`;
+          block.style.color = "#b91c1c";
+          continue;
+        }
+        if(sel.value === right){
+          correct++;
+          block.innerHTML = `✅ Correct!<br>${exp}`;
+          block.style.color = "#065f46";
+        }else{
+          block.innerHTML = `❌ Your answer: <b>${sel.value}</b><br>✅ Correct answer: <b>${right}</b><br>${exp}`;
+          block.style.color = "#b91c1c";
+        }
+      }
+
+      const pct = Math.round((correct/total)*100);
+      const box = document.getElementById("score");
+      box.style.display = "block";
+      box.className = "result " + (pct >= 80 ? "ok" : "bad");
+      box.textContent = `🎯 Score: ${correct}/${total} (${pct}%)`;
+      window.scrollTo({top: box.offsetTop - 20, behavior: 'smooth'});
+    }
+
+    function resetQuiz(){
+      document.getElementById("quizForm").reset();
+      document.querySelectorAll('.explanation').forEach(e => { e.style.display="none"; e.textContent=""; e.removeAttribute('style'); });
+      const box = document.getElementById("score");
+      box.style.display = "none";
+      box.className = "result";
+      box.textContent = "";
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+  </script>
+</body>
+</html>
