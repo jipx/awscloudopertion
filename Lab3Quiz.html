@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Module 4 · Lab 3 – Auto Scaling (Troubleshooting MCQ)</title>
+<style>
+  :root{
+    --bg:#0b1220; --card:#121a2b; --ink:#e8eefc; --muted:#a9b4d0; --accent:#5aa6ff; --good:#28a745; --bad:#e5534b; --warn:#ffb020;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif; background:var(--bg); color:var(--ink); line-height:1.5}
+  header{padding:24px 16px; text-align:center; background:linear-gradient(90deg, rgba(90,166,255,.15), rgba(90,166,255,0)); border-bottom:1px solid rgba(255,255,255,.06)}
+  h1{margin:.2rem 0 0; font-size:clamp(20px,2.8vw,28px)}
+  p.sub{margin:.35rem 0 0; color:var(--muted)}
+  main{max-width:920px; margin:24px auto; padding:0 16px 64px}
+  .card{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:16px; padding:20px; margin:16px 0; box-shadow:0 10px 30px rgba(0,0,0,.25)}
+  .q{font-weight:600; margin:0 0 10px; font-size:18px}
+  code, pre{background:#0a0f1c; color:#d6e2ff; border:1px solid rgba(255,255,255,.08); padding:.2rem .35rem; border-radius:6px}
+  pre{padding:12px; overflow:auto}
+  .opt{display:block; margin:.35rem 0; padding:.6rem .75rem; border-radius:10px; border:1px solid rgba(255,255,255,.08); cursor:pointer}
+  .opt input{margin-right:.55rem}
+  .meta{color:var(--muted); font-size:.95rem; margin-top:.25rem}
+  .actions{display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin:24px 0}
+  button{border:none; padding:12px 18px; border-radius:12px; font-weight:700; cursor:pointer}
+  #submit{background:var(--accent); color:#071427}
+  #reset{background:#1f2a44; color:var(--ink); border:1px solid rgba(255,255,255,.08)}
+  .feedback{margin-top:10px; padding:10px 12px; border-radius:10px; display:none}
+  .feedback.good{display:block; background:rgba(40,167,69,.12); border:1px solid rgba(40,167,69,.35)}
+  .feedback.bad{display:block; background:rgba(229,83,75,.12); border:1px solid rgba(229,83,75,.35)}
+  .score{font-size:20px; font-weight:800; text-align:center; padding:12px 14px; border-radius:12px; background:#0a1020; border:1px solid rgba(255,255,255,.08)}
+  .hint{font-size:.92rem; color:#dcdff1}
+  footer{max-width:920px; margin:0 auto 40px; padding:0 16px; color:var(--muted); text-align:center}
+  .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; background:#0a0f1c; border:1px solid rgba(255,255,255,.08); border-radius:6px; padding:2px 6px}
+</style>
+</head>
+<body>
+  <header>
+    <h1>Module 4 · Lab 3 — Auto Scaling (Troubleshooting MCQ)</h1>
+    <p class="sub">Self‑grading quiz. Focus on AWS CLI pitfalls, ALB/ASG health, JMESPath quoting, and scaling policy behavior.</p>
+  </header>
+
+  <main id="quiz">
+
+    <!-- Q1 -->
+    <section class="card" data-q="1" data-answer="B" data-explain="No public IP means you can’t reach it via browser. Add --associate-public-ip-address or enable MapPublicIpOnLaunch on the subnet.">
+      <div class="q">Q1. You launched an instance but the web server isn’t reachable from the internet. Which is most likely?</div>
+      <pre><code>aws ec2 run-instances --key-name vockey --instance-type t2.micro --image-id ami-0254b2d5c4c472488 --user-data file:///home/ec2-user/UserData.txt --security-group-ids sg-0de36fa9889dd12f2 --subnet-id subnet-0510b0721cd7a3234</code></pre>
+      <label class="opt"><input type="radio" name="q1" value="A"> A. Wrong AMI ID</label>
+      <label class="opt"><input type="radio" name="q1" value="B"> B. Missing <span class="kbd">--associate-public-ip-address</span></label>
+      <label class="opt"><input type="radio" name="q1" value="C"> C. Instance type unsupported</label>
+      <label class="opt"><input type="radio" name="q1" value="D"> D. UserData is empty</label>
+      <div class="feedback"></div>
+    </section>
+
+    <!-- Q2 -->
+    <section class="card" data-q="2" data-answer="C" data-explain="JMESPath must be quoted so the shell doesn’t interpret [] or -.">
+      <div class="q">Q2. Why does this command error with “Bad jmespath expression: Unknown token '-'”?</div>
+      <pre><code>aws ec2 describe-instances --instance-id i-02fc7400ca8b68bb7 --query Reservations[0].Instances[0].NetworkInterfaces[0].Association.PublicDnsName</code></pre>
+      <label class="opt"><input type="radio" name="q2" value="A"> A. Wrong instance ID</label>
+      <label class="opt"><input type="radio" name="q2" value="B"> B. Instance has no DNS name</label>
+      <label class="opt"><input type="radio" name="q2" value="C"> C. Missing quotes around the <span class="kbd">--query</span> expression</label>
+      <label class="opt"><input type="radio" name="q2" value="D"> D. Wrong subnet type</label>
+      <div class="feedback"></div>
+    </section>
+
+    <!-- Q3 -->
+    <section class="card" data-q="3" data-answer="B" data-explain="create-image reboots by default to ensure filesystem consistency. Use --no-reboot to skip (with caution).">
+      <div class="q">Q3. Why did your instance reboot during AMI creation?</div>
+      <pre><code>aws ec2 create-image --name WebServer --instance-id i-0123456789abcdef</code></pre>
+      <label class="opt"><input type="radio" name="q3" value="A"> A. Random AWS maintenance</label>
+      <label class="opt"><input type="radio" name="q3" value="B"> B. Default behavior of <span class="kbd">create-image</span> is to reboot</label>
+      <label class="opt"><input type="radio" name="q3" value="C"> C. ASG terminated it</label>
+      <label class="opt"><input type="radio" name="q3" value="D"> D. Security group forced a reboot</label>
+      <div class="feedback"></div>
+    </section>
+
+    <!-- Q4 -->
+    <section class="card" data-q="4" data-answer="B" data-explain="Unhealthy targets most commonly result from a wrong health check path or a failed web server/bootstrap.">
+      <div class="q">Q4. Your target group shows all instances as <strong>Unhealthy</strong>. What do you check first?</div>
+      <label class="opt"><input type="radio" name="q4" value="A"> A. ALB must be in private subnets</label>
+      <label class="opt"><input type="radio" name="q4" value="B"> B. Health check path <span class="kbd">/index.php</span> and that Apache/PHP is running</label>
+      <label class="opt"><input type="radio" name="q4" value="C"> C. The ASG name casing</label>
+      <label class="opt"><input type="radio" name="q4" value="D"> D. Reboot the ALB</label>
+      <div class="feedback"></div>
+    </section>
+
+    <!-- Q5 -->
+    <section class="card" data-q="5" data-answer="A" data-explain="Lab policy tracks ASGAverageCPUUtilization at ~45%. If set too high, Start Stress won’t trigger scale-out.">
+      <div class="q">Q5. “Start Stress” didn’t scale out. What’s most likely?</div>
+      <label class="opt"><input type="radio" name="q5" value="A"> A. Scaling target is too high (e.g., 85% CPU)</label>
+      <label class="opt"><input type="radio" name="q5" value="B"> B. Launch template name must be uppercase</label>
+      <label class="opt"><input type="radio" name="q5" value="C"> C. Instances are in public subnets</label>
+      <label class="opt"><input type="radio" name="q5" value="D"> D. CloudWatch graphs need to be refreshed</label>
+      <div class="feedback"></div>
+    </section>
+
+    <!-- Q6 -->
+    <section class="card" data-q="6" data-answer="C" data-explain="Scaling policy is modeled by AWS::AutoScaling::ScalingPolicy (TargetTrackingScaling).">
+      <div class="q">Q6. Which CloudFormation resource models the target-tracking scaling policy?</div>
+      <label class="opt"><input type="radio" name="q6" value="A"> A. <span class="kbd">AWS::AutoScaling::LaunchConfiguration</span></label>
+      <label class="opt"><input type="radio" name="q6" value="B"> B. <span class="kbd">AWS::ElasticLoadBalancingV2::Listener</span></label>
+      <label class="opt"><input type="radio" name="q6" value="C"> C. <span class="kbd">AWS::AutoScaling::ScalingPolicy</span></label>
+      <label class="opt"><input type="radio" name="q6" value="D"> D. <span class="kbd">AWS::EC2::LaunchTemplate</span></label>
+      <div class="feedback"></div>
+    </section>
+
+    <!-- Q7 -->
+    <section class="card" data-q="7" data-answer="D" data-explain="Public ALB, healthy targets, and open SG are all needed. Any misstep breaks connectivity.">
+      <div class="q">Q7. After stack deploy, the ALB URL doesn’t load. Likely cause?</div>
+      <label class="opt"><input type="radio" name="q7" value="A"> A. ALB scheme is internal</label>
+      <label class="opt"><input type="radio" name="q7" value="B"> B. ASG has zero healthy instances</label>
+      <label class="opt"><input type="radio" name="q7" value="C"> C. Security group has no inbound 80</label>
+      <label class="opt"><input type="radio" name="q7" value="D"> D. All of the above</label>
+      <div class="feedback"></div>
+    </section>
+
+    <div class="actions">
+      <button id="submit">Submit Answers</button>
+      <button id="reset" type="button">Reset</button>
+    </div>
+
+    <div id="result" class="score" aria-live="polite">Score: 0 / 7</div>
+
+    <section class="card hint">
+      <strong>Hints & References</strong>
+      <ul>
+        <li>Always quote JMESPath <code>--query</code> expressions.</li>
+        <li>Ensure public reachability: public subnets + public IP + SG TCP/80.</li>
+        <li>ALB health check path must exist (<code>/index.php</code>) and return 200.</li>
+        <li>Target tracking set to ~45% ASG average CPU for this lab.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>© Auto Scaling Lab – Teaching Aid</footer>
+
+<script>
+(function(){
+  const submit = document.getElementById('submit');
+  const resetBtn = document.getElementById('reset');
+  const result = document.getElementById('result');
+  const cards = [...document.querySelectorAll('.card[data-q]')];
+
+  function grade(){
+    let correct = 0;
+    cards.forEach(card => {
+      const ans = card.dataset.answer;
+      const picked = (card.querySelector('input[type="radio"]:checked')||{}).value;
+      const fb = card.querySelector('.feedback');
+      if(picked === ans){
+        correct++;
+        fb.className = 'feedback good';
+        fb.textContent = '✅ Correct. ' + card.dataset.explain;
+      } else if(!picked){
+        fb.className = 'feedback bad';
+        fb.textContent = '❗ Not answered yet.';
+      } else {
+        fb.className = 'feedback bad';
+        fb.textContent = '❌ Incorrect. ' + card.dataset.explain;
+      }
+    });
+    result.textContent = `Score: ${correct} / ${cards.length}`;
+  }
+
+  function reset(){
+    document.querySelectorAll('input[type="radio"]').forEach(i => i.checked = false);
+    document.querySelectorAll('.feedback').forEach(f => { f.className = 'feedback'; f.textContent=''; });
+    result.textContent = `Score: 0 / ${cards.length}`;
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  submit.addEventListener('click', grade);
+  resetBtn.addEventListener('click', reset);
+})();
+</script>
+</body>
+</html>
