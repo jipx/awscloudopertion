@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 6 – Migrate to Amazon RDS (Mom & Pop Café)</title>
+<style>
+  body { font-family: "Segoe UI", sans-serif; margin: 20px; background: #f8fafc; color: #111; }
+  h1 { color: #0f62fe; }
+  .question { background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+  button { margin-top: 10px; background: #0f62fe; color: white; border: none; border-radius: 6px; padding: 8px 16px; cursor: pointer; }
+  button:hover { background: #0353e9; }
+  .feedback { margin-top: 8px; padding: 8px; border-radius: 6px; display: none; }
+  .correct { background: #d1fae5; color: #065f46; }
+  .wrong { background: #fee2e2; color: #991b1b; }
+</style>
+</head>
+<body>
+
+<h1>☁️ Module 6 – Migrate to Amazon RDS (Mom & Pop Café)</h1>
+<p><strong>Instructions:</strong> Select the best answer for each question, then click <em>Check Answer</em>.</p>
+
+<div id="quiz"></div>
+
+<script>
+const quizData = [
+  {q:"1. What is the primary reason Mom & Pop Café decided to migrate their local database to Amazon RDS?",
+   options:["A. To increase instance size","B. To reduce manual maintenance tasks like backups and patching","C. To move database closer to customers","D. To enable multi-region replication"],
+   correct:1,
+   exp:"RDS automates backups, patching, and updates—reducing manual weekend work."},
+
+  {q:"2. Which AWS service automates common database tasks like backups and patching?",
+   options:["A. Amazon DynamoDB","B. Amazon EC2","C. Amazon RDS","D. AWS Systems Manager"],
+   correct:2,
+   exp:"Amazon RDS is a managed service that automates patching and backups."},
+
+  {q:"3. In the original setup, where was the Mom & Pop Café database hosted?",
+   options:["A. Amazon RDS","B. Same EC2 instance as the web app","C. S3 bucket","D. Private subnet"],
+   correct:1,
+   exp:"Initially, both web app and database ran on one LAMP EC2 instance."},
+
+  {q:"4. What is the function of the 'aws configure' command?",
+   options:["A. Deploy EC2","B. Set credentials, region and output format","C. Enable CloudWatch logging","D. Configure SSH access"],
+   correct:1,
+   exp:"It stores AWS access keys, region and preferred output format for CLI."},
+
+  {q:"5. Which AWS CLI command retrieves the instance ID and SG of MomPopCafeInstance?",
+   options:["A. aws ec2 describe-vpcs","B. aws ec2 describe-instances","C. aws ec2 describe-subnets","D. aws ec2 describe-availability-zones"],
+   correct:1,
+   exp:"describe-instances returns EC2 details such as ID, type, and SG."},
+
+  {q:"6. Why does the RDS instance use two private subnets in different AZs?",
+   options:["A. High availability and fault tolerance","B. Allow SSH access","C. Reduce cost","D. Improve internet speed"],
+   correct:0,
+   exp:"Multi-AZ subnet groups enable redundancy and failover."},
+
+  {q:"7. Which CLI command creates a DB subnet group?",
+   options:["A. aws ec2 create-subnet","B. aws rds create-db-subnet-group","C. aws rds create-db-instance","D. aws ec2 create-route-table"],
+   correct:1,
+   exp:"create-db-subnet-group defines private subnets for RDS placement."},
+
+  {q:"8. What is the purpose of the MomPopCafeDatabaseSG security group?",
+   options:["A. Allow internet access","B. Allow MySQL traffic from web tier SG","C. Allow SSM","D. Expose RDS publicly"],
+   correct:1,
+   exp:"Inbound TCP 3306 is allowed only from the web tier SG."},
+
+  {q:"9. Which parameter ensures the RDS instance is private?",
+   options:["A. --publicly-accessible true","B. --no-publicly-accessible","C. --availability-zone private","D. --vpc-private"],
+   correct:1,
+   exp:"--no-publicly-accessible disables public IP assignment for RDS."},
+
+  {q:"10. What is the default port for MariaDB?",
+   options:["A. 8080","B. 22","C. 3306","D. 443"],
+   correct:2,
+   exp:"MariaDB/MySQL uses TCP port 3306."},
+
+  {q:"11. What does 'mysqldump' do in this lab?",
+   options:["A. Deletes data","B. Exports schema and data to SQL file","C. Imports SQL to RDS","D. Syncs EC2 with S3"],
+   correct:1,
+   exp:"mysqldump exports local DB into a .sql file for migration."},
+
+  {q:"12. How is data imported into RDS?",
+   options:["A. mysql --import","B. mysql --host=<endpoint> < backup.sql","C. aws rds import-db-data","D. mysqldump --restore"],
+   correct:1,
+   exp:"mysql client connects to RDS endpoint and executes backup.sql contents."},
+
+  {q:"13. Where is the database connection string stored for the app?",
+   options:["A. /etc/httpd/conf/httpd.conf","B. SSM Parameter Store /mompopcafe/dbUrl","C. EC2 hostname","D. Environment variable"],
+   correct:1,
+   exp:"Database URL is externalized in AWS Systems Manager Parameter Store."},
+
+  {q:"14. What confirms a successful data migration?",
+   options:["A. Site fails to connect","B. Same order history after migration","C. DB reset","D. Only new orders appear"],
+   correct:1,
+   exp:"Same order count before and after migration indicates successful data transfer."},
+
+  {q:"15. Which CloudWatch metric shows active DB connections?",
+   options:["A. CPUUtilization","B. FreeStorageSpace","C. DBConnections","D. ReadIOPS"],
+   correct:2,
+   exp:"DBConnections counts active client sessions to the DB instance."},
+
+  {q:"16. What happens to DBConnections when you open an SQL session?",
+   options:["A. Remains zero","B. Increases by one","C. Resets","D. Triggers alarm"],
+   correct:1,
+   exp:"Each new SQL connection increments DBConnections by 1."},
+
+  {q:"17. What is the default backup retention period for a new RDS instance?",
+   options:["A. 0 days","B. 1 day","C. 7 days","D. 14 days"],
+   correct:1,
+   exp:"RDS retains automated backups for 1 day by default."},
+
+  {q:"18. Which AWS CLI validates a CloudFormation template?",
+   options:["A. aws cloudformation deploy","B. aws cloudformation validate-template","C. aws cloudformation describe-stacks","D. aws cloudformation create-stack"],
+   correct:1,
+   exp:"validate-template checks JSON/YAML syntax before stack creation."},
+
+  {q:"19. How can you monitor the RDS creation status?",
+   options:["A. aws rds get-db-status","B. aws rds describe-db-instances","C. aws ec2 describe-volumes","D. aws rds monitor-instance"],
+   correct:1,
+   exp:"describe-db-instances returns status fields such as 'creating' or 'available'."},
+
+  {q:"20. What happens when you end the lab?",
+   options:["A. Resources stay running","B. All resources are deleted automatically","C. Only EC2 stops","D. RDS remains active"],
+   correct:1,
+   exp:"AWS Academy triggers a cleanup deleting all lab resources."
+  }
+];
+
+const quizContainer = document.getElementById("quiz");
+quizData.forEach((item, index) => {
+  const div = document.createElement("div");
+  div.className = "question";
+  div.innerHTML = `
+    <p><strong>${item.q}</strong></p>
+    ${item.options.map((opt,i)=>`<label><input type="radio" name="q${index}" value="${i}"> ${opt}</label><br>`).join("")}
+    <button onclick="checkAnswer(${index})">Check Answer</button>
+    <div id="fb${index}" class="feedback"></div>
+  `;
+  quizContainer.appendChild(div);
+});
+
+function checkAnswer(i){
+  const selected = document.querySelector(`input[name="q${i}"]:checked`);
+  const fb = document.getElementById(`fb${i}`);
+  if(!selected){alert("Please select an answer."); return;}
+  const val = parseInt(selected.value);
+  if(val === quizData[i].correct){
+    fb.innerHTML = "✅ Correct! " + quizData[i].exp;
+    fb.className = "feedback correct";
+  } else {
+    fb.innerHTML = "❌ Incorrect. " + quizData[i].exp;
+    fb.className = "feedback wrong";
+  }
+  fb.style.display = "block";
+}
+</script>
+
+</body>
+</html>
