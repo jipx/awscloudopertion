@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 7 – Lab 4: Configure VPC — MCQ Quiz</title>
+<style>
+  :root{
+    --bg:#0b1220;
+    --card:#111a2b;
+    --ink:#e6edf3;
+    --ink-dim:#a9b5c3;
+    --accent:#64b5f6;
+    --correct:#2e7d32;
+    --wrong:#b00020;
+    --muted:#22304a;
+  }
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Inter,Segoe UI,system-ui,-apple-system,Roboto,Arial,sans-serif;line-height:1.6}
+  header{padding:22px 18px;border-bottom:1px solid var(--muted);background:linear-gradient(180deg,#0f1830,transparent)}
+  h1{font-size:clamp(20px,3vw,28px);margin:0 0 4px 0}
+  .subtitle{color:var(--ink-dim);font-size:14px}
+  main{max-width:900px;margin:24px auto;padding:0 16px 80px}
+  .toolbar{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 18px}
+  button{border:0;padding:10px 14px;border-radius:10px;background:var(--accent);color:#07121f;font-weight:600;cursor:pointer}
+  button.secondary{background:var(--muted);color:var(--ink)}
+  button:disabled{opacity:.6;cursor:not-allowed}
+  .card{background:var(--card);border:1px solid var(--muted);border-radius:16px;padding:18px 18px;margin:14px 0;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .qhead{display:flex;justify-content:space-between;gap:8px}
+  .qtitle{font-weight:700;font-size:18px}
+  .choices{margin-top:10px;display:grid;gap:10px}
+  label.choice{display:flex;gap:10px;align-items:flex-start;background:#0d1729;border:1px solid #203151;border-radius:12px;padding:10px 12px;cursor:pointer}
+  input[type="radio"]{margin-top:3px;transform:scale(1.15)}
+  .explain{margin-top:10px;padding:10px 12px;border-radius:12px;background:#0f1d33;border:1px dashed #294163;color:var(--ink-dim);display:none}
+  .status{font-weight:700;margin-left:auto}
+  .correct{color:var(--correct)}
+  .wrong{color:var(--wrong)}
+  .small{font-size:12px;color:var(--ink-dim)}
+  footer{position:fixed;bottom:0;left:0;right:0;background:rgba(9,14,26,.9);backdrop-filter:blur(6px);border-top:1px solid var(--muted);padding:10px 16px;display:flex;gap:10px;align-items:center;justify-content:center}
+  .score{font-weight:800}
+  .kbd{background:#08101e;border:1px solid #1c2a43;border-radius:6px;padding:2px 6px;font-family:ui-monospace,Consolas,monospace;font-size:12px}
+  a.download{color:#b2d5ff}
+</style>
+</head>
+<body>
+<header>
+  <h1>Module 7 – Lab 4: Configure VPC — MCQ Quiz</h1>
+  <div class="subtitle">20 questions • auto‑graded • includes explanations • Keyboard shortcuts: <span class="kbd">A</span> Check All, <span class="kbd">R</span> Reset.</div>
+</header>
+<main>
+  <div class="toolbar">
+    <button id="checkAll">Check All</button>
+    <button id="reset" class="secondary">Reset</button>
+    <span class="small">Tip: Select an option then click <b>Check</b> to see feedback for a single question.</span>
+  </div>
+
+    <section class="card" data-index="0" id="q1">
+      <div class="qhead">
+        <div class="qtitle">Q1. What is the CIDR block assigned to the Lab VPC in this lab?</div>
+        <div class="status" id="status-1"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q1" value="0">
+          <span><b>A.</b> 10.0.0.0/24</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q1" value="1">
+          <span><b>B.</b> 10.0.2.0/23</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q1" value="2">
+          <span><b>C.</b> 10.0.0.0/16</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q1" value="3">
+          <span><b>D.</b> 172.31.0.0/16</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-1"><b>Explanation:</b> The Lab VPC uses 10.0.0.0/16, providing ~65,536 private IPv4 addresses.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="1">Check</button>
+        <button class="clear secondary" data-q="1">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="1" id="q2">
+      <div class="qhead">
+        <div class="qtitle">Q2. Which feature must be enabled so that EC2 instances receive DNS names automatically?</div>
+        <div class="status" id="status-2"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q2" value="0">
+          <span><b>A.</b> Enable Auto IP</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q2" value="1">
+          <span><b>B.</b> Enable DNS Support</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q2" value="2">
+          <span><b>C.</b> Enable DNS Hostnames</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q2" value="3">
+          <span><b>D.</b> Enable DHCP Options</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-2"><b>Explanation:</b> Enable DNS Hostnames assigns friendly DNS names such as ec2-xx-xx-xx.compute.amazonaws.com.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="2">Check</button>
+        <button class="clear secondary" data-q="2">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="2" id="q3">
+      <div class="qhead">
+        <div class="qtitle">Q3. The Public Subnet uses which IPv4 CIDR block?</div>
+        <div class="status" id="status-3"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q3" value="0">
+          <span><b>A.</b> 10.0.2.0/23</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q3" value="1">
+          <span><b>B.</b> 10.0.0.0/24</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q3" value="2">
+          <span><b>C.</b> 10.0.1.0/24</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q3" value="3">
+          <span><b>D.</b> 10.0.3.0/24</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-3"><b>Explanation:</b> The public subnet occupies 10.0.0.0/24 within the 10.0.0.0/16 VPC range.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="3">Check</button>
+        <button class="clear secondary" data-q="3">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="3" id="q4">
+      <div class="qhead">
+        <div class="qtitle">Q4. What setting makes a subnet public?</div>
+        <div class="status" id="status-4"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q4" value="0">
+          <span><b>A.</b> Auto-assign Public IP</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q4" value="1">
+          <span><b>B.</b> Attach Internet Gateway to VPC</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q4" value="2">
+          <span><b>C.</b> Route 0.0.0.0/0 to the Internet Gateway</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q4" value="3">
+          <span><b>D.</b> Allow HTTP traffic</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-4"><b>Explanation:</b> A subnet becomes public when its route table sends 0.0.0.0/0 to an Internet Gateway.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="4">Check</button>
+        <button class="clear secondary" data-q="4">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="4" id="q5">
+      <div class="qhead">
+        <div class="qtitle">Q5. Which component enables resources in the private subnet to reach the internet?</div>
+        <div class="status" id="status-5"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q5" value="0">
+          <span><b>A.</b> Bastion Host</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q5" value="1">
+          <span><b>B.</b> Internet Gateway</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q5" value="2">
+          <span><b>C.</b> Elastic IP</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q5" value="3">
+          <span><b>D.</b> NAT Gateway</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-5"><b>Explanation:</b> A NAT Gateway lets private instances initiate outbound internet connections while remaining unreachable from the internet.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="5">Check</button>
+        <button class="clear secondary" data-q="5">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="5" id="q6">
+      <div class="qhead">
+        <div class="qtitle">Q6. Which AWS service provides the virtual private network environment?</div>
+        <div class="status" id="status-6"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q6" value="0">
+          <span><b>A.</b> Amazon EC2</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q6" value="1">
+          <span><b>B.</b> Amazon VPC</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q6" value="2">
+          <span><b>C.</b> AWS VPN Gateway</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q6" value="3">
+          <span><b>D.</b> AWS CloudFormation</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-6"><b>Explanation:</b> Amazon VPC creates the isolated virtual network for your resources.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="6">Check</button>
+        <button class="clear secondary" data-q="6">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="6" id="q7">
+      <div class="qhead">
+        <div class="qtitle">Q7. Why is a Bastion Host used?</div>
+        <div class="status" id="status-7"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q7" value="0">
+          <span><b>A.</b> To store SSH keys</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q7" value="1">
+          <span><b>B.</b> To monitor logs</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q7" value="2">
+          <span><b>C.</b> To provide secure SSH access to private instances</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q7" value="3">
+          <span><b>D.</b> To translate IP addresses</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-7"><b>Explanation:</b> A Bastion Host (jump box) is an entry point to reach instances in private subnets.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="7">Check</button>
+        <button class="clear secondary" data-q="7">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="7" id="q8">
+      <div class="qhead">
+        <div class="qtitle">Q8. Which subnet does the Bastion Host belong to?</div>
+        <div class="status" id="status-8"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q8" value="0">
+          <span><b>A.</b> Private Subnet</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q8" value="1">
+          <span><b>B.</b> Public Subnet</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q8" value="2">
+          <span><b>C.</b> DMZ Subnet</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q8" value="3">
+          <span><b>D.</b> Transit Subnet</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-8"><b>Explanation:</b> The Bastion must be in a public subnet so you can reach it from the internet.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="8">Check</button>
+        <button class="clear secondary" data-q="8">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="8" id="q9">
+      <div class="qhead">
+        <div class="qtitle">Q9. Which subnet does the NAT Gateway reside in?</div>
+        <div class="status" id="status-9"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q9" value="0">
+          <span><b>A.</b> Private Subnet</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q9" value="1">
+          <span><b>B.</b> Public Subnet</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q9" value="2">
+          <span><b>C.</b> Separate VPC</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q9" value="3">
+          <span><b>D.</b> Peered Subnet</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-9"><b>Explanation:</b> The NAT Gateway must be in a public subnet and use an Elastic IP.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="9">Check</button>
+        <button class="clear secondary" data-q="9">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="9" id="q10">
+      <div class="qhead">
+        <div class="qtitle">Q10. What route is added to the public route table for internet access?</div>
+        <div class="status" id="status-10"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q10" value="0">
+          <span><b>A.</b> 10.0.0.0/16 → IGW</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q10" value="1">
+          <span><b>B.</b> 0.0.0.0/0 → IGW</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q10" value="2">
+          <span><b>C.</b> 10.0.0.0/16 → Local</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q10" value="3">
+          <span><b>D.</b> 0.0.0.0/0 → NAT Gateway</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-10"><b>Explanation:</b> 0.0.0.0/0 represents all non-local traffic, which should route to the Internet Gateway.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="10">Check</button>
+        <button class="clear secondary" data-q="10">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="10" id="q11">
+      <div class="qhead">
+        <div class="qtitle">Q11. What route is added to the private route table for outbound internet?</div>
+        <div class="status" id="status-11"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q11" value="0">
+          <span><b>A.</b> 0.0.0.0/0 → IGW</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q11" value="1">
+          <span><b>B.</b> 10.0.0.0/16 → Local</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q11" value="2">
+          <span><b>C.</b> 0.0.0.0/0 → NAT Gateway</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q11" value="3">
+          <span><b>D.</b> ::/0 → IGW</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-11"><b>Explanation:</b> Private subnets send internet-bound traffic to the NAT Gateway.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="11">Check</button>
+        <button class="clear secondary" data-q="11">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="11" id="q12">
+      <div class="qhead">
+        <div class="qtitle">Q12. Why does the lab script set the password 'lab-password'?</div>
+        <div class="status" id="status-12"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q12" value="0">
+          <span><b>A.</b> To bypass key pair validation</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q12" value="1">
+          <span><b>B.</b> To allow simple password SSH from Bastion to Private Instance</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q12" value="2">
+          <span><b>C.</b> To test user login policy</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q12" value="3">
+          <span><b>D.</b> Because AWS requires a default password</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-12"><b>Explanation:</b> It enables password authentication so students can SSH from the Bastion into the private instance in an isolated lab.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="12">Check</button>
+        <button class="clear secondary" data-q="12">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="12" id="q13">
+      <div class="qhead">
+        <div class="qtitle">Q13. Which command verifies that the private instance can reach the internet?</div>
+        <div class="status" id="status-13"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q13" value="0">
+          <span><b>A.</b> curl localhost</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q13" value="1">
+          <span><b>B.</b> ping -c 3 amazon.com</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q13" value="2">
+          <span><b>C.</b> netstat -an</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q13" value="3">
+          <span><b>D.</b> traceroute 10.0.0.0</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-13"><b>Explanation:</b> Successful pings confirm outbound connectivity via the NAT Gateway.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="13">Check</button>
+        <button class="clear secondary" data-q="13">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="13" id="q14">
+      <div class="qhead">
+        <div class="qtitle">Q14. If the NAT Gateway fails, what is the impact on the private subnet?</div>
+        <div class="status" id="status-14"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q14" value="0">
+          <span><b>A.</b> Inbound access lost</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q14" value="1">
+          <span><b>B.</b> Outbound internet access lost</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q14" value="2">
+          <span><b>C.</b> VPC deleted</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q14" value="3">
+          <span><b>D.</b> No effect</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-14"><b>Explanation:</b> Without the NAT Gateway, private instances cannot reach the internet.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="14">Check</button>
+        <button class="clear secondary" data-q="14">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="14" id="q15">
+      <div class="qhead">
+        <div class="qtitle">Q15. What does the Internet Gateway do?</div>
+        <div class="status" id="status-15"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q15" value="0">
+          <span><b>A.</b> Encrypts traffic</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q15" value="1">
+          <span><b>B.</b> Performs network address translation for public IPs</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q15" value="2">
+          <span><b>C.</b> Stores routes</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q15" value="3">
+          <span><b>D.</b> Provides DNS resolution</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-15"><b>Explanation:</b> The IGW provides a target for internet-bound routes and supports public IP connectivity.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="15">Check</button>
+        <button class="clear secondary" data-q="15">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="15" id="q16">
+      <div class="qhead">
+        <div class="qtitle">Q16. Which AWS service can automate all the VPC creation steps?</div>
+        <div class="status" id="status-16"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q16" value="0">
+          <span><b>A.</b> Elastic Beanstalk</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q16" value="1">
+          <span><b>B.</b> CloudFormation</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q16" value="2">
+          <span><b>C.</b> Lambda</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q16" value="3">
+          <span><b>D.</b> CloudTrail</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-16"><b>Explanation:</b> CloudFormation provisions resources declaratively using templates.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="16">Check</button>
+        <button class="clear secondary" data-q="16">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="16" id="q17">
+      <div class="qhead">
+        <div class="qtitle">Q17. In the template, what property enables public IPs on instances launched in the public subnet?</div>
+        <div class="status" id="status-17"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q17" value="0">
+          <span><b>A.</b> EnableDnsHostnames: true</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q17" value="1">
+          <span><b>B.</b> MapPublicIpOnLaunch: true</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q17" value="2">
+          <span><b>C.</b> AutoPublicIP: Yes</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q17" value="3">
+          <span><b>D.</b> PublicIPEnabled: true</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-17"><b>Explanation:</b> `MapPublicIpOnLaunch: true` on the subnet auto-assigns public IPv4 addresses.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="17">Check</button>
+        <button class="clear secondary" data-q="17">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="17" id="q18">
+      <div class="qhead">
+        <div class="qtitle">Q18. Which resource type creates the 0.0.0.0/0 route to the IGW in CloudFormation?</div>
+        <div class="status" id="status-18"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q18" value="0">
+          <span><b>A.</b> AWS::EC2::InternetGateway</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q18" value="1">
+          <span><b>B.</b> AWS::EC2::RouteTable</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q18" value="2">
+          <span><b>C.</b> AWS::EC2::Route</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q18" value="3">
+          <span><b>D.</b> AWS::EC2::SubnetRouteTableAssociation</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-18"><b>Explanation:</b> `AWS::EC2::Route` defines the specific route entry.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="18">Check</button>
+        <button class="clear secondary" data-q="18">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="18" id="q19">
+      <div class="qhead">
+        <div class="qtitle">Q19. Which property ensures the NAT Gateway has a public IP?</div>
+        <div class="status" id="status-19"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q19" value="0">
+          <span><b>A.</b> ElasticIPAllocation: true</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q19" value="1">
+          <span><b>B.</b> Domain: vpc</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q19" value="2">
+          <span><b>C.</b> AllocateElasticIP: yes</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q19" value="3">
+          <span><b>D.</b> AllocationId from an EIP</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-19"><b>Explanation:</b> The NAT Gateway references `AllocationId: !GetAtt NatEIP.AllocationId` from an Elastic IP resource.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="19">Check</button>
+        <button class="clear secondary" data-q="19">Clear</button>
+      </div>
+    </section>
+    
+
+    <section class="card" data-index="19" id="q20">
+      <div class="qhead">
+        <div class="qtitle">Q20. What is the main security benefit of using a private subnet?</div>
+        <div class="status" id="status-20"></div>
+      </div>
+      <div class="choices">
+        
+        <label class="choice">
+          <input type="radio" name="q20" value="0">
+          <span><b>A.</b> Faster network speed</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q20" value="1">
+          <span><b>B.</b> Automatic encryption</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q20" value="2">
+          <span><b>C.</b> Isolation from direct internet access</span>
+        </label>
+        
+        <label class="choice">
+          <input type="radio" name="q20" value="3">
+          <span><b>D.</b> Cheaper data transfer</span>
+        </label>
+        
+      </div>
+      <div class="explain" id="explain-20"><b>Explanation:</b> Private subnets block inbound internet access, reducing attack surface.</div>
+      <div class="toolbar" style="margin-top:10px">
+        <button class="check" data-q="20">Check</button>
+        <button class="clear secondary" data-q="20">Clear</button>
+      </div>
+    </section>
+    
+
+  <div class="toolbar" style="margin-top:40px;justify-content:center;">
+    <button id="checkAllBottom">Check All</button>
+    <button id="resetBottom" class="secondary">Reset</button>
+  </div>
+
+</main>
+<footer>
+  <span class="score" id="score">Score: 0 / 20</span>
+</footer>
+
+<script>
+const KEY = [2, 2, 1, 2, 3, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 3, 2];
+
+function checkOne(idx) {
+  const qid = idx + 1;
+  const sel = document.querySelector('section#q'+qid+' input[type="radio"]:checked');
+  const status = document.getElementById('status-'+qid);
+  const explain = document.getElementById('explain-'+qid);
+  if(!sel) { status.textContent = 'Select an option'; status.className='status wrong'; return 0; }
+  const ans = parseInt(sel.value,10);
+  if(ans === KEY[idx]) {
+    status.textContent = 'Correct';
+    status.className = 'status correct';
+    explain.style.display = 'block';
+    return 1;
+  } else {
+    status.textContent = 'Incorrect';
+    status.className = 'status wrong';
+    explain.style.display = 'block';
+    return 0;
+  }
+}
+
+function scoreAll() {
+  let s = 0;
+  for(let i=0;i<KEY.length;i++) s += checkOne(i);
+  document.getElementById('score').textContent = `Score: ${s} / 20`;
+}
+
+function clearOne(qid) {
+  document.querySelectorAll('#q'+qid+' input[type="radio"]').forEach(r => r.checked = false);
+  document.getElementById('status-'+qid).textContent = '';
+  document.getElementById('status-'+qid).className = 'status';
+  document.getElementById('explain-'+qid).style.display = 'none';
+  document.getElementById('score').textContent = 'Score: 0 / 20';
+}
+
+document.querySelectorAll('button.check').forEach(btn => {
+  btn.addEventListener('click', e => checkOne(parseInt(btn.dataset.q,10)-1));
+});
+document.querySelectorAll('button.clear').forEach(btn => {
+  btn.addEventListener('click', e => clearOne(btn.dataset.q));
+});
+document.getElementById('checkAll').addEventListener('click', scoreAll);
+document.getElementById('reset').addEventListener('click', () => {
+  for(let i=1;i<=20;i++) clearOne(i);
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+  if(e.key.toLowerCase() === 'a') scoreAll();
+  if(e.key.toLowerCase() === 'r') document.getElementById('reset').click();
+});
+
+document.getElementById('checkAllBottom').addEventListener('click', scoreAll);
+document.getElementById('resetBottom').addEventListener('click', () => {
+  for(let i=1;i<=KEY.length;i++) clearOne(i);
+});
+
+</script>
+</body>
+</html>
